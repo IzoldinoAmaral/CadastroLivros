@@ -1,0 +1,47 @@
+﻿@model Livro
+@{
+    ViewData["Title"] = "Editar Livro";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Editar Livro</h1>
+
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-controller="Livro" asp-action="Atualizar" method="post">
+
+    <input type="hidden" asp-for="Codl" />
+    <div class="form-group">
+    <label for="titulo">Titulo</label>
+    <input type="text" asp-for="Titulo" class="form-control" placeholder="Digite o nome do livro">
+    </div>
+    <div class="form-group">
+        <label for="editora">Editora</label>
+        <input type="text" asp-for="Editora" class="form-control" placeholder="Digite o nome da Editora">
+    </div>
+    <div class="form-group">
+        <label for="edicao">Edição</label>
+        <input type="number" asp-for="Edicao" class="form-control" placeholder="Digite o numero da edição">
+    </div>
+    <div class="form-group">
+        <label for="ano">Ano de Publicação</label>
+        <input type="number" asp-for="AnoPublicacao" class="form-control" placeholder="Digite o Ano da publicação">
+    </div>
+@*     <div class="form-group">
+        <label for="ano">Autores</label>
+        <input type="text" class="form-control" placeholder="Adicione o autor">
+    </div>
+    <div class="form-group">
+        <label for="ano">Ano de Publicação</label>
+        <input type="text" class="form-control" placeholder="Adicione o assunto">
+    </div> *@
+    <button type="submit" class="btn btn-primary btn-block">Atualizar</button>
+    <a class="btn btn-secondary d-block" asp-controller="Livro" asp-action="Index">Voltar</a>
+</form>
