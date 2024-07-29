@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Cadastrar Assunto";
+﻿@model Autor
+@{
+    ViewData["Title"] = "Cadastrar Autor";
 }
 
 <div class="text-center">
@@ -7,11 +8,12 @@
 
 </div>
 
-<form>
+<form asp-controller="Autor" asp-action="Criar" method="post">
     <div class="form-group">
         <label for="assunto">Assunto</label>
-        <input type="text" class="form-control" placeholder="Digite o assunto">        
+        <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o assunto">
+        @Html.ValidationMessageFor(x => x.Nome)
     </div>    
-    <a class="btn btn-primary d-block" role="button">Adicionar</a>
-    <a class=" btn btn-secondary d-block" asp-controller="Assunto" asp-action="Index">Voltar</a>
+    <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
+    <a class=" btn btn-secondary d-block" asp-controller="Autor" asp-action="Index">Voltar</a>
 </form>

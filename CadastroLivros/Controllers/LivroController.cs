@@ -1,7 +1,7 @@
-﻿using CadastroLivros.Data.Repositorio;
-using CadastroLivros.Interfaces.Servicos;
+﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CadastroLivros.Controllers
 {
@@ -33,17 +33,41 @@ namespace CadastroLivros.Controllers
         [HttpPost]
         public async Task<IActionResult> Atualizar(Livro livro)
         {
-             var resultado = await _livroServico.AtualizarAsync(livro);
-             if (!resultado.Sucesso)
-             {
-                 return NotFound(resultado.Mensagem);
-             }
-             return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _livroServico.AtualizarAsync(livro);
+                    TempData["MensagemSucesso"] = "Livro atualizado com sucesso";
+                    return RedirectToAction("Index");
+                }
+                return View("Editar", livro);
+            }
+            catch (Exception erro)
+            {
+
+                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro:{erro.Message}";
+                return RedirectToAction("Index");
+            }
+             
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
         {
-            await _livroServico.DeletarAsync(id);
-            return RedirectToAction("Index");
+            try
+            {
+                bool deletado = await _livroServico.DeletarAsync(id);
+                if (deletado)
+                {
+                    TempData["MensagemSucesso"] = "Livro deletado com sucesso";
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception erro)
+            {
+                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro:{erro.Message}";
+                return RedirectToAction("Index");
+
+            }
         }
         public async Task<IActionResult> Deletar(int id)
         {
@@ -53,8 +77,23 @@ namespace CadastroLivros.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar(Livro livro)
         {
-            await _livroServico.AdicionarAsync(livro);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _livroServico.AdicionarAsync(livro);
+                    TempData["MensagemSucesso"] = "Livro Cadastrado com sucesso";
+                    return RedirectToAction("Index");
+                }
+
+                return View(livro);
+
+            }
+            catch (Exception erro)
+            {
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro:{erro.Message}";
+                return RedirectToAction("Index");
+            }
 
         }
 

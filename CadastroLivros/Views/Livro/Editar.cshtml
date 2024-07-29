@@ -21,18 +21,22 @@
     <div class="form-group">
     <label for="titulo">Titulo</label>
     <input type="text" asp-for="Titulo" class="form-control" placeholder="Digite o nome do livro">
+        @Html.ValidationMessageFor(x => x.Titulo)
     </div>
     <div class="form-group">
         <label for="editora">Editora</label>
         <input type="text" asp-for="Editora" class="form-control" placeholder="Digite o nome da Editora">
+        @Html.ValidationMessageFor(x => x.Editora)
     </div>
     <div class="form-group">
         <label for="edicao">Edição</label>
         <input type="number" asp-for="Edicao" class="form-control" placeholder="Digite o numero da edição">
+        @Html.ValidationMessageFor(x => x.Edicao)
     </div>
     <div class="form-group">
         <label for="ano">Ano de Publicação</label>
         <input type="number" asp-for="AnoPublicacao" class="form-control" placeholder="Digite o Ano da publicação">
+        @Html.ValidationMessageFor(x => x.AnoPublicacao)
     </div>
 @*     <div class="form-group">
         <label for="ano">Autores</label>

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Assunto
+@{
     ViewData["Title"] = "Editar Assunto";
 }
 
@@ -7,11 +8,13 @@
 
 </div>
 
-<form>
+<form asp-controller="Assunto" asp-action="Atualizar" method="post">
+    <input type="hidden" asp-for="CodAs" />
     <div class="form-group">
         <label for="assunto">Assunto</label>
-        <input type="text" class="form-control" placeholder="Digite o assunto">
+        <input type="text" asp-for="Descricao" class="form-control" placeholder="Digite o assunto">
+        @Html.ValidationMessageFor(x => x.Descricao)
     </div>
-    <a class="btn btn-primary d-block" role="button">Editar</a>
+    <button type="submit" class="btn btn-primary btn-block">Atualizar</button>
     <a class=" btn btn-secondary d-block" asp-controller="Assunto" asp-action="Index">Voltar</a>
 </form>

@@ -1,6 +1,5 @@
 ﻿using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Data.Repositorio

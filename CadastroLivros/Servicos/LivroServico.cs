@@ -62,15 +62,15 @@ namespace CadastroLivros.Servicos
             return await _livroRepositorio.BuscarTodosAsync();
         }
 
-        public async Task<Resultado> DeletarAsync(int id)
+        public async Task<bool> DeletarAsync(int id)
         {
             var livroDb = await BuscarPorCodAsync(id);
             if (livroDb == null)
             {
-                return new Resultado { Sucesso = false, Mensagem = "Livro não encontrado." };
+                return false;
             }
             await _livroRepositorio.DeletarAsync(livroDb);
-            return new Resultado { Sucesso = true };
+            return true;
         }
     }
 }

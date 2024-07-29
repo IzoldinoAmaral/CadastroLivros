@@ -13,12 +13,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BancoContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
 
-builder.Services.AddScoped<IGenericoRepositorio<Livro>, LivroRepositorio>(); 
-builder.Services.AddScoped<ILivroServico, LivroServico>(); 
-
-
-
-
+builder.Services.AddScoped<IGenericoRepositorio<Livro>, LivroRepositorio>();
+builder.Services.AddScoped<IGenericoRepositorio<Autor>, AutorRepositorio>();
+builder.Services.AddScoped<IGenericoRepositorio<Assunto>, AssuntoRepositorio>();
+builder.Services.AddScoped<ILivroServico, LivroServico>();
+builder.Services.AddScoped<IAutorServico, AutorServico>();
+builder.Services.AddScoped<IAssuntoServico, AssuntoServico>();
 
 var app = builder.Build();
 

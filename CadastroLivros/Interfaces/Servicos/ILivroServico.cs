@@ -10,6 +10,6 @@ namespace CadastroLivros.Interfaces.Servicos
         Task<Resultado> BuscarPorNomeAsync(string titulo);
         Task<bool> AdicionarAsync(Livro livro);
         Task<Resultado> AtualizarAsync(Livro livro);
-        Task<Resultado> DeletarAsync(int cod);
+        Task<bool> DeletarAsync(int cod);
     }
 }

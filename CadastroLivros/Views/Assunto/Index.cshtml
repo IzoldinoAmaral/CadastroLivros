@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Assunto>
+@{
     ViewData["Title"] = "Listagem de Assuntos";
 }
 
@@ -6,7 +7,24 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary" role="button" asp-controller="Assunto" asp-action="Criar">Adicionar novo assunto</a>
     </div>
-    
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <br />
     <h1 class="display-4">Listagem de Assuntos</h1>
 
     <table class="table">
@@ -18,36 +36,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>                
-                <td>Assunto</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a role="button" class="btn btn-primary" asp-controller="Assunto" asp-action="Editar">Editar</a>
-                        <a role="button" class="btn btn-danger" asp-controller="Assunto" asp-action="Deletar">Deletar</a>
-                    </div>
-                </td>            
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Assunto</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a role="button" class="btn btn-primary" asp-controller="Assunto" asp-action="Editar">Editar</a>
-                        <a role="button" class="btn btn-danger" asp-controller="Assunto" asp-action="Deletar">Deletar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>                           
-                <td>Assunto</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a role="button" class="btn btn-primary" asp-controller="Assunto" asp-action="Editar">Editar</a>
-                        <a role="button" class="btn btn-danger" asp-controller="Assunto" asp-action="Deletar">Deletar</a>
-                    </div>
-                </td>
-            </tr>
+            @if (Model != null && Model.Any())
+            {
+                foreach (Assunto assunto in Model)
+                {
+                    <tr>
+                        <th scope="row">@assunto.CodAs</th>                        
+                        <td>@assunto.Descricao</td>                        
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a role="button" class="btn btn-primary" asp-route-id="@assunto.CodAs" asp-controller="Assunto" asp-action="Editar">Editar</a>
+                                <a role="button" class="btn btn-danger" asp-route-id="@assunto.CodAs" asp-controller="Assunto" asp-action="Deletar">Deletar</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 
