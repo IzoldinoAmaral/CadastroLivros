@@ -1,7 +1,6 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CadastroLivros.Controllers
 {
@@ -16,9 +15,10 @@ namespace CadastroLivros.Controllers
         {
             var livros = await _livroServico.BuscarTodosAsync();
             return View(livros);
+
         }
 
-        public IActionResult Criar()
+        public async Task<IActionResult> Criar()
         {
             return View();
         }

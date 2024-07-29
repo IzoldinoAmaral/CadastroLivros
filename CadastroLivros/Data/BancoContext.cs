@@ -17,7 +17,7 @@ namespace CadastroLivros.Data
         {
             modelBuilder.Entity<Assunto>(entity =>
             {
-                entity.HasKey(e => e.CodAs).HasName("PK__Assunto__F41597616E10CD35");
+                entity.HasKey(e => e.CodAs);
 
                 entity.ToTable("Assunto");
 
@@ -29,7 +29,7 @@ namespace CadastroLivros.Data
 
             modelBuilder.Entity<Autor>(entity =>
             {
-                entity.HasKey(e => e.CodAu).HasName("PK__Autor__F4159767F9692936");
+                entity.HasKey(e => e.CodAu);
 
                 entity.ToTable("Autor");
 
@@ -41,7 +41,7 @@ namespace CadastroLivros.Data
 
             modelBuilder.Entity<FormaCompra>(entity =>
             {
-                entity.HasKey(e => e.CodCom).HasName("PK__FormaCom__98E6D1F216219E02");
+                entity.HasKey(e => e.CodCom);
 
                 entity.ToTable("FormaCompra");
 
@@ -54,7 +54,7 @@ namespace CadastroLivros.Data
 
             modelBuilder.Entity<Livro>(entity =>
             {
-                entity.HasKey(e => e.Codl).HasName("PK__Livro__A25C5ABF3F3B7DA5");
+                entity.HasKey(e => e.Codl);
 
                 entity.ToTable("Livro");
 
@@ -75,12 +75,12 @@ namespace CadastroLivros.Data
                         "LivroAssunto",
                         r => r.HasOne<Assunto>().WithMany()
                             .HasForeignKey("AssuntoCodAs")
-                            .OnDelete(DeleteBehavior.ClientSetNull)
-                            .HasConstraintName("FK__LivroAssu__Assun__6754599E"),
+                            .OnDelete(DeleteBehavior.ClientSetNull),
+                            
                         l => l.HasOne<Livro>().WithMany()
                             .HasForeignKey("LivroCodl")
-                            .OnDelete(DeleteBehavior.ClientSetNull)
-                            .HasConstraintName("FK__LivroAssu__Livro__66603565"),
+                            .OnDelete(DeleteBehavior.ClientSetNull),
+                            
                         j =>
                         {
                             j.HasKey("LivroCodl", "AssuntoCodAs");
@@ -92,12 +92,12 @@ namespace CadastroLivros.Data
                         "LivroAutor",
                         r => r.HasOne<Autor>().WithMany()
                             .HasForeignKey("AutorCodAu")
-                            .OnDelete(DeleteBehavior.ClientSetNull)
-                            .HasConstraintName("FK__LivroAuto__Autor__6383C8BA"),
+                            .OnDelete(DeleteBehavior.ClientSetNull),
+                            
                         l => l.HasOne<Livro>().WithMany()
                             .HasForeignKey("LivroCodl")
-                            .OnDelete(DeleteBehavior.ClientSetNull)
-                            .HasConstraintName("FK__LivroAuto__Livro__628FA481"),
+                            .OnDelete(DeleteBehavior.ClientSetNull),
+                            
                         j =>
                         {
                             j.HasKey("LivroCodl", "AutorCodAu");
@@ -107,7 +107,7 @@ namespace CadastroLivros.Data
 
             modelBuilder.Entity<PrecoLivro>(entity =>
             {
-                entity.HasKey(e => e.CodPrecoLivro).HasName("PK__PrecoLiv__0F5E640291B5047A");
+                entity.HasKey(e => e.CodPrecoLivro);
 
                 entity.ToTable("PrecoLivro");
 
@@ -116,12 +116,12 @@ namespace CadastroLivros.Data
                 entity.Property(e => e.Valor).HasColumnType("decimal(10, 2)");
 
                 entity.HasOne(d => d.FormaCompra).WithMany(p => p.PrecoLivros)
-                    .HasForeignKey(d => d.FormaCompraId)
-                    .HasConstraintName("FK__PrecoLivr__Forma__6D0D32F4");
+                    .HasForeignKey(d => d.FormaCompraId);
+                
 
                 entity.HasOne(d => d.Livro).WithMany(p => p.PrecoLivros)
-                    .HasForeignKey(d => d.LivroCodl)
-                    .HasConstraintName("FK__PrecoLivr__Livro__6C190EBB");
+                    .HasForeignKey(d => d.LivroCodl);
+                   
             });
 
             OnModelCreatingPartial(modelBuilder);

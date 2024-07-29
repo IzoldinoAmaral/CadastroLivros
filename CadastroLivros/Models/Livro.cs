@@ -15,11 +15,11 @@ namespace CadastroLivros.Models
         [Required(ErrorMessage = "Digite o ano da publicacao do Livro")]        
         public string AnoPublicacao { get; set; }
 
-        public virtual ICollection<PrecoLivro> PrecoLivros { get; set; } = new List<PrecoLivro>();
+        public  ICollection<PrecoLivro>? PrecoLivros { get; set; }
 
-        public virtual ICollection<Assunto> Assuntos { get; set; } = new List<Assunto>();
+        public  ICollection<Assunto>? Assuntos { get; set; } 
 
-        public virtual ICollection<Autor> Autores { get; set; } = new List<Autor>();
+        public  ICollection<Autor>? Autores { get; set; } 
 
     }
 }

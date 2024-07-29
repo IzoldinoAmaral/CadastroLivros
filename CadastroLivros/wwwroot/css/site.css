@@ -31,3 +31,7 @@ body {
     width: 30px;
     height: 31px;
 }
+.btn-block {
+    display: block;
+    width: 100%;
+}
