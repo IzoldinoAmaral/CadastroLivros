@@ -57,9 +57,19 @@ namespace CadastroLivros.Servicos
 
         }
 
+        public async Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync()
+        {
+            return await _livroRepositorio.BuscarTodosAssuntosAsync();
+        }
+
         public async Task<IEnumerable<Livro>> BuscarTodosAsync()
         {
             return await _livroRepositorio.BuscarTodosAsync();
+        }
+
+        public async Task<IEnumerable<Autor>> BuscarTodosAutoresAsync()
+        {
+            return await _livroRepositorio.BuscarTodosAutoresAsync();
         }
 
         public async Task<bool> DeletarAsync(int id)

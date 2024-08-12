@@ -51,5 +51,15 @@ namespace CadastroLivros.Data.Repositorio
             await _bancoContext.SaveChangesAsync();
             return true;
         }
+
+        public Task<IEnumerable<Autor>> BuscarTodosAutoresAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

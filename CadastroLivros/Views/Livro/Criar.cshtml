@@ -29,6 +29,19 @@
         <input type="number" asp-for="AnoPublicacao" class="form-control" placeholder="Digite o Ano da publicação">
         @Html.ValidationMessageFor(x => x.AnoPublicacao)
     </div>
+@*     <div class="form-group">
+        <label asp-for="Autores"></label>
+        <select asp-for="Autores" asp-items="@(new SelectList(Model.Autores, "CodAu", "Nome"))" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple name="Autores">
+            <option value="">Selecione os autores</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Assuntos"></label>
+        <select asp-for="Assuntos" asp-items="@(new SelectList(Model.Assuntos, "CodAs", "Descricao"))" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple name="Assuntos">
+            <option value="">Selecione os assuntos</option>
+        </select>
+    </div> *@
     
     <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
     <a class=" btn btn-secondary d-block" asp-controller="Livro" asp-action="Index">Voltar</a>

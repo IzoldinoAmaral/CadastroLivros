@@ -10,6 +10,8 @@ namespace CadastroLivros.Data
         public DbSet<Livro> Livros { get; set; }
         public DbSet<Autor> Autores { get; set; }
         public DbSet<Assunto> Assuntos { get; set; }
+        public DbSet<LivroAutor> LivroAutores { get; set; }
+        public DbSet<LivroAssunto> LivroAssuntos { get; set; }
         public DbSet<FormaCompra> FormaCompras { get; set; }
         public DbSet<PrecoLivro> PrecoLivros { get; set; }
 
@@ -27,6 +29,7 @@ namespace CadastroLivros.Data
                     .IsUnicode(false);
             });
 
+
             modelBuilder.Entity<Autor>(entity =>
             {
                 entity.HasKey(e => e.CodAu);
@@ -38,6 +41,32 @@ namespace CadastroLivros.Data
                     .HasMaxLength(40)
                     .IsUnicode(false);
             });
+
+            modelBuilder.Entity<LivroAutor>()
+            .HasKey(la => new { la.LivroCodl, la.AutorCodAu });
+
+            modelBuilder.Entity<LivroAutor>()
+                .HasOne(la => la.Livro)
+                .WithMany(l => l.LivroAutores)
+                .HasForeignKey(la => la.LivroCodl);
+
+            modelBuilder.Entity<LivroAutor>()
+                .HasOne(la => la.Autor)
+                .WithMany(a => a.LivrosAutores)
+                .HasForeignKey(la => la.AutorCodAu);
+
+            modelBuilder.Entity<LivroAssunto>() // Using a composite key
+                .HasKey(la => new { la.LivroCodl, la.AssuntoCodAs });
+
+            modelBuilder.Entity<LivroAssunto>()
+                .HasOne(la => la.Livro)
+                .WithMany(l => l.LivroAssuntos)
+                .HasForeignKey(la => la.LivroCodl);
+
+            modelBuilder.Entity<LivroAssunto>()
+                .HasOne(la => la.Assunto)
+                .WithMany(a => a.LivroAssuntos)
+                .HasForeignKey(la => la.AssuntoCodAs);
 
             modelBuilder.Entity<FormaCompra>(entity =>
             {

@@ -1,6 +1,7 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Controllers
 {
@@ -20,7 +21,13 @@ namespace CadastroLivros.Controllers
 
         public async Task<IActionResult> Criar()
         {
-            return View();
+            var livro = new Livro()
+            {                
+                Autores = await _livroServico.BuscarTodosAutoresAsync(),
+                Assuntos = await _livroServico.BuscarTodosAssuntosAsync()
+            };
+
+            return View(livro);
         }
 
         public async Task<IActionResult> Editar(int id)
@@ -46,7 +53,7 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
              
@@ -64,7 +71,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
 
             }
@@ -91,7 +98,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
 
