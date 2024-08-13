@@ -1,4 +1,5 @@
-﻿using CadastroLivros.Interfaces.Repositorios;
+﻿using CadastroLivros.Extensions;
+using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using CadastroLivros.Types;
@@ -8,10 +9,12 @@ namespace CadastroLivros.Servicos
     public class LivroServico : ILivroServico
     {
         private readonly IGenericoRepositorio<Livro> _livroRepositorio;
+        private readonly IFormaCompraServico _formaCompraServico;
 
-        public LivroServico(IGenericoRepositorio<Livro> livroRepositorio)
+        public LivroServico(IGenericoRepositorio<Livro> livroRepositorio, IFormaCompraServico formaCompraServico)
         {
             _livroRepositorio = livroRepositorio ?? throw new ArgumentNullException(nameof(livroRepositorio));
+            _formaCompraServico = formaCompraServico ?? throw new ArgumentNullException(nameof(formaCompraServico));
         }
 
         public async Task<bool> AdicionarAsync(Livro livro)
@@ -57,9 +60,19 @@ namespace CadastroLivros.Servicos
 
         }
 
+        public async Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync()
+        {
+            return await _livroRepositorio.BuscarTodosAssuntosAsync();
+        }
+
         public async Task<IEnumerable<Livro>> BuscarTodosAsync()
         {
             return await _livroRepositorio.BuscarTodosAsync();
+        }
+
+        public async Task<IEnumerable<Autor>> BuscarTodosAutoresAsync()
+        {
+            return await _livroRepositorio.BuscarTodosAutoresAsync();
         }
 
         public async Task<bool> DeletarAsync(int id)
@@ -71,6 +84,25 @@ namespace CadastroLivros.Servicos
             }
             await _livroRepositorio.DeletarAsync(livroDb);
             return true;
+        }
+
+        public async Task<DetalhesLivroViewModel> ListarDetalhesAsync(int codLivro)
+        {
+            var livro = await BuscarPorCodAsync(codLivro);
+            var formasDeCompra = await _formaCompraServico.BuscarTodosAsync();
+
+            var viewModel = new DetalhesLivroViewModel
+            {
+                NomeLivro = livro.Titulo,
+                Precos = formasDeCompra.Select(forma => new Preco
+                {
+                    FormaCompra = forma.Descricao,
+                    Desconto = forma.Desconto,
+                    ValorFinal = livro.PrecoBase.ComDesconto(forma.Desconto)
+                }).ToList()             
+
+            };            
+            return viewModel;
         }
     }
 }

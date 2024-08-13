@@ -1,0 +1,61 @@
+﻿@model IEnumerable<FormaCompra>
+@{
+    ViewData["Title"] = "Listagem de Forma de Compra";
+}
+
+<div class="text-center">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary" role="button" asp-controller="FormaCompra" asp-action="Criar">Adicionar nova Forma de Compra</a>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <br />
+    <h1 class="display-4">Listagem de Forma de Compra</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Forma de Compra</th>
+                <th scope="col">Desconto (%)</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (FormaCompra fcompra in Model)
+                {
+                    <tr>
+                        <th scope="row">@fcompra.CodCom</th>
+                        <td>@fcompra.Descricao</td>
+                        <td>@((fcompra.Desconto / 100).ToString("P"))</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a role="button" class="btn btn-primary" asp-route-id="@fcompra.CodCom" asp-controller="FormaCompra" asp-action="Editar">Editar</a>
+                                <a role="button" class="btn btn-danger" asp-route-id="@fcompra.CodCom" asp-controller="FormaCompra" asp-action="Deletar">Deletar</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

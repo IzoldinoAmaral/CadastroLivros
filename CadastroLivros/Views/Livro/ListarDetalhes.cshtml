@@ -1,0 +1,29 @@
+﻿@model DetalhesLivroViewModel
+
+<h1>Detalhes do Livro: @Model.NomeLivro</h1>
+
+<div class="text-center">
+    <h1 class="display-3">Detalhes do Livro : @Model.NomeLivro</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Forma de Compra</th>
+                <th>Desconto</th>
+                <th>Valor Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var preco in Model.Precos)
+            {
+                <tr>
+                    <td>@preco.FormaCompra</td>
+                    <td>@((preco.Desconto / 100).ToString("P"))</td>
+                    <td>@preco.ValorFinal.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn btn-secondary d-block" asp-controller="Livro" asp-action="Index">Voltar</a>
+</div>
+

@@ -46,7 +46,7 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar autor, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao atualizar autor, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
         }
@@ -63,7 +63,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar autor, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao deletar autor, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
 
             }
@@ -90,7 +90,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar autor, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar autor, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
 

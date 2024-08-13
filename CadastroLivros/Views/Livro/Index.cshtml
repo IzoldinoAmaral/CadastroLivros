@@ -4,6 +4,7 @@
 }
 
 <div class="text-center">
+    <script src="js/site.js"></script>
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary" role="button" asp-controller="Livro" asp-action="Criar">Adicionar novo livro</a>
     </div>
@@ -36,6 +37,7 @@
                 <th scope="col">Editora</th>
                 <th scope="col">Edição</th>
                 <th scope="col">Ano de Publicação</th>
+                <th scope="col">Preço de tabela</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -49,11 +51,13 @@
                         <td>@livro.Titulo</td>
                         <td>@livro.Editora</td>
                         <td>@livro.Edicao</td>
-                        <td>@livro.AnoPublicacao</td>                       
+                        <td>@livro.AnoPublicacao</td>                        
+                        <td>@livro.PrecoBase.ToString("C")</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <a role="button" class="btn btn-primary" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="Editar">Editar</a>
                                 <a role="button" class="btn btn-danger" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="Deletar">Deletar</a>
+                                <a role="button" class="btn btn-info" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="ListarDetalhes">Detalhes</a>
                             </div>
                         </td>
 
@@ -62,5 +66,6 @@
             }
         </tbody>
     </table>
+
 
 </div>

@@ -18,9 +18,22 @@ namespace CadastroLivros.Controllers
 
         }
 
+        public async Task<IActionResult> ListarDetalhes(int id)
+        {
+            var livros = await _livroServico.ListarDetalhesAsync(id);
+            return View(livros);
+
+        }
+
         public async Task<IActionResult> Criar()
         {
-            return View();
+            var livro = new Livro()
+            {                
+                Autores = await _livroServico.BuscarTodosAutoresAsync(),
+                Assuntos = await _livroServico.BuscarTodosAssuntosAsync()
+            };
+
+            return View(livro);
         }
 
         public async Task<IActionResult> Editar(int id)
@@ -46,10 +59,10 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
-             
+
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
         {
@@ -64,7 +77,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
 
             }
@@ -91,7 +104,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro:{erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
 

@@ -4,14 +4,14 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Cadastrar Assunto</h1>
+    <h1 class="display-4">Cadastrar Autor</h1>
 
 </div>
 
 <form asp-controller="Autor" asp-action="Criar" method="post">
     <div class="form-group">
-        <label for="assunto">Assunto</label>
-        <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o assunto">
+        <label for="autor">Autor</label>
+        <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o autor">
         @Html.ValidationMessageFor(x => x.Nome)
     </div>    
     <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
