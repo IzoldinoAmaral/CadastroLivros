@@ -7,3 +7,17 @@ $('.close-alert').click(function () {
     $('.alert').hide('hide');
 });
 
+function mostrarDetalhes(codLivro) {
+    $.ajax({
+        url: '/Livro/ListarDetalhes',
+        data: { codLivro: codLivro },
+        success: function (data) {
+            $('#modal-content').html(data);
+            $('#detalhesModal').modal('show');
+        }
+    });
+}
+
+
+
+

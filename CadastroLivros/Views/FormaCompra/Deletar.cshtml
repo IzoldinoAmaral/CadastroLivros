@@ -1,0 +1,12 @@
+﻿@model FormaCompra
+@{
+    ViewData["Title"] = "Confirmação deletar forma de compra";
+}
+
+<div class="text-center">
+    <h3>Deseja deletar a Forma de Compra (@Model.Descricao)?</h3>
+</div>
+
+<a class="btn btn-primary d-block" asp-controller="FormaCompra" asp-action="Index" role="button">Cancelar Exclusão</a>
+<a class="btn btn-danger d-block" asp-controller="FormaCompra" asp-action="ConfirmarDelecao" asp-route-id="@Model.CodCom" role="button">Confirmar Exclusão</a>
+

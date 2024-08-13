@@ -9,6 +9,7 @@ namespace CadastroLivros.Types
         public Livro? Livro { get; set; }
         public Autor? Autor { get; set; }
         public Assunto? Assunto { get; set; }
+        public FormaCompra? FormaCompra { get; set; }
 
     }
 }

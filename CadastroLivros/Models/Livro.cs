@@ -17,8 +17,11 @@ namespace CadastroLivros.Models
         [Required(ErrorMessage = "Digite o ano da publicacao do Livro")]
         [Range(1900, int.MaxValue, ErrorMessage = "O ano de publicação deve ser válido")]
         public string AnoPublicacao { get; set; }
+        [Required(ErrorMessage = "Digite o preçco de tabela do Livro")]
+        [Range(1, double.MaxValue, ErrorMessage = "O Preço deve ser um número positivo")]
+        public decimal PrecoBase { get; set; }
 
-        public  ICollection<PrecoLivro>? PrecoLivros { get; set; }
+        //public  ICollection<PrecoLivro>? PrecoLivros { get; set; }
 
         public IEnumerable<Assunto>? Assuntos { get; set; }
 

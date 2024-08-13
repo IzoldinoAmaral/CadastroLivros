@@ -90,5 +90,10 @@ namespace CadastroLivros.Data.Repositorio
         {
             return await _bancoContext.Assuntos.ToListAsync();
         }
+
+        public Task<IEnumerable<Livro>> ListarDetalhesAsync(int cod)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

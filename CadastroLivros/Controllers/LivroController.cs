@@ -1,7 +1,6 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Controllers
 {
@@ -15,6 +14,13 @@ namespace CadastroLivros.Controllers
         public async Task<IActionResult> Index()
         {
             var livros = await _livroServico.BuscarTodosAsync();
+            return View(livros);
+
+        }
+
+        public async Task<IActionResult> ListarDetalhes(int CodLivro)
+        {
+            var livros = await _livroServico.ListarDetalhesAsync(CodLivro);
             return View(livros);
 
         }
@@ -56,7 +62,7 @@ namespace CadastroLivros.Controllers
                 TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
-             
+
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
         {

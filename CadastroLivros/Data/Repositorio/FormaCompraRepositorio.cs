@@ -4,50 +4,50 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Data.Repositorio
 {
-    public class AssuntoRepositorio : IGenericoRepositorio<Assunto>
+    public class FormaCompraRepositorio : IGenericoRepositorio<FormaCompra>
     {
         private readonly BancoContext _bancoContext;
-        public AssuntoRepositorio(BancoContext bancoContext)
+        public FormaCompraRepositorio(BancoContext bancoContext)
         {
             _bancoContext = bancoContext;
         }
 
-        public async Task<bool> AdicionarAsync(Assunto assunto)
+        public async Task<bool> AdicionarAsync(FormaCompra formaCompra)
         {
 
-            _bancoContext.Assuntos.Add(assunto);
+            _bancoContext.FormaCompras.Add(formaCompra);
             await _bancoContext.SaveChangesAsync();
             return true;
 
         }
 
-        public async Task<Assunto> Atualizar(Assunto assunto)
+        public async Task<FormaCompra> Atualizar(FormaCompra formaCompra)
         {
-            _bancoContext.Assuntos.Update(assunto);
+            _bancoContext.FormaCompras.Update(formaCompra);
             await _bancoContext.SaveChangesAsync();
-            return assunto;
+            return formaCompra;
         }
 
         public async Task<bool> BuscarPorNomeAsync(string descricao)
         {
 
-            return await _bancoContext.Assuntos.AnyAsync(l => l.Descricao == descricao);
+            return await _bancoContext.FormaCompras.AnyAsync(l => l.Descricao == descricao);
 
         }
 
-        public async Task<Assunto> BuscarPorCodAsync(int cod)
+        public async Task<FormaCompra> BuscarPorCodAsync(int cod)
         {
-            return await _bancoContext.Assuntos.FirstOrDefaultAsync(c => c.CodAs == cod);
+            return await _bancoContext.FormaCompras.FirstOrDefaultAsync(c => c.CodCom == cod);
         }
 
-        public async Task<IEnumerable<Assunto>> BuscarTodosAsync()
+        public async Task<IEnumerable<FormaCompra>> BuscarTodosAsync()
         {
-            return await _bancoContext.Assuntos.ToListAsync();
+            return await _bancoContext.FormaCompras.ToListAsync();
         }
 
-        public async Task<bool> DeletarAsync(Assunto assunto)
+        public async Task<bool> DeletarAsync(FormaCompra formaCompra)
         {
-            _bancoContext.Assuntos.Remove(assunto);
+            _bancoContext.FormaCompras.Remove(formaCompra);
             await _bancoContext.SaveChangesAsync();
             return true;
         }
@@ -62,7 +62,7 @@ namespace CadastroLivros.Data.Repositorio
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Assunto>> ListarDetalhesAsync(int cod)
+        public Task<IEnumerable<FormaCompra>> ListarDetalhesAsync(int cod)
         {
             throw new NotImplementedException();
         }

@@ -61,5 +61,10 @@ namespace CadastroLivros.Data.Repositorio
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Autor>> ListarDetalhesAsync(int cod)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
