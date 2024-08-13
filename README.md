@@ -21,6 +21,7 @@ CREATE TABLE Livro (
     Codl INT PRIMARY KEY IDENTITY(1,1),
     Titulo VARCHAR(40) NOT NULL,
     Editora VARCHAR(40),
+	PrecoBase DECIMAL(10,2) NOT NULL,
     Edicao INT,
     AnoPublicacao CHAR(4)
 );
@@ -53,14 +54,6 @@ CREATE TABLE FormaCompra (
     Desconto DECIMAL(5,2) 
 );
 
-CREATE TABLE PrecoLivro (
-    CodPrecoLivro INT PRIMARY KEY IDENTITY(1,1),
-    LivroCodl INT FOREIGN KEY REFERENCES Livro(Codl),
-    FormaCompraId INT FOREIGN KEY REFERENCES FormaCompra(CodCom),
-    Valor DECIMAL(10,2) NOT NULL,
-    DataInicio DATETIME,
-    DataFim DATETIME
-);
 ```
 * Após isso ja pode buildar e executar o projeto
 

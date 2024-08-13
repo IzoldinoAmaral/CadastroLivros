@@ -21,8 +21,6 @@ namespace CadastroLivros.Models
         [Range(1, double.MaxValue, ErrorMessage = "O Preço deve ser um número positivo")]
         public decimal PrecoBase { get; set; }
 
-        //public  ICollection<PrecoLivro>? PrecoLivros { get; set; }
-
         public IEnumerable<Assunto>? Assuntos { get; set; }
 
         public IEnumerable<Autor>? Autores { get; set; }

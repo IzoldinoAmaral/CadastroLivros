@@ -1,10 +1,10 @@
 ﻿@model DetalhesLivroViewModel
 
-<div class="modal-header">
-    <h5 class="modal fade " id="detalhesModal">Detalhes do Livro: @Model.NomeLivro</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body">
+<h1>Detalhes do Livro: @Model.NomeLivro</h1>
+
+<div class="text-center">
+    <h1 class="display-3">Detalhes do Livro : @Model.NomeLivro</h1>
+
     <table class="table">
         <thead>
             <tr>
@@ -18,14 +18,12 @@
             {
                 <tr>
                     <td>@preco.FormaCompra</td>
-                    <td>@preco.Desconto:p</td>
-                    <td>@preco.ValorFinal:c</td>
+                    <td>@((preco.Desconto / 100).ToString("P"))</td>
+                    <td>@preco.ValorFinal.ToString("C")</td>
                 </tr>
             }
         </tbody>
     </table>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+    <a class="btn btn-secondary d-block" asp-controller="Livro" asp-action="Index">Voltar</a>
 </div>
 

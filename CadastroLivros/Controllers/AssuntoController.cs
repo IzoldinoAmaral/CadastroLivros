@@ -1,6 +1,5 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
-using CadastroLivros.Servicos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroLivros.Controllers

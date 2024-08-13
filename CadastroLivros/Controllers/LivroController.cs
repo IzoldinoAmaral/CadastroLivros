@@ -18,9 +18,9 @@ namespace CadastroLivros.Controllers
 
         }
 
-        public async Task<IActionResult> ListarDetalhes(int CodLivro)
+        public async Task<IActionResult> ListarDetalhes(int id)
         {
-            var livros = await _livroServico.ListarDetalhesAsync(CodLivro);
+            var livros = await _livroServico.ListarDetalhesAsync(id);
             return View(livros);
 
         }

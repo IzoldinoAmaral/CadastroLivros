@@ -12,8 +12,7 @@ namespace CadastroLivros.Data
         public DbSet<Assunto> Assuntos { get; set; }
         public DbSet<LivroAutor> LivroAutores { get; set; }
         public DbSet<LivroAssunto> LivroAssuntos { get; set; }
-        public DbSet<FormaCompra> FormaCompras { get; set; }
-        //public DbSet<PrecoLivro> PrecoLivros { get; set; }
+        public DbSet<FormaCompra> FormaCompras { get; set; }        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,7 +54,7 @@ namespace CadastroLivros.Data
                 .WithMany(a => a.LivrosAutores)
                 .HasForeignKey(la => la.AutorCodAu);
 
-            modelBuilder.Entity<LivroAssunto>() // Using a composite key
+            modelBuilder.Entity<LivroAssunto>() 
                 .HasKey(la => new { la.LivroCodl, la.AssuntoCodAs });
 
             modelBuilder.Entity<LivroAssunto>()
@@ -133,25 +132,6 @@ namespace CadastroLivros.Data
                             j.ToTable("LivroAutor");
                         });
             });
-
-            //modelBuilder.Entity<PrecoLivro>(entity =>
-            //{
-            //    entity.HasKey(e => e.CodPrecoLivro);
-
-            //    entity.ToTable("PrecoLivro");
-
-            //    entity.Property(e => e.DataFim).HasColumnType("datetime");
-            //    entity.Property(e => e.DataInicio).HasColumnType("datetime");
-            //    entity.Property(e => e.Valor).HasColumnType("decimal(10, 2)");
-
-            //    //entity.HasOne(d => d.FormaCompra).WithMany(p => p.PrecoLivros)
-            //    //    .HasForeignKey(d => d.FormaCompraId);
-
-
-            //    entity.HasOne(d => d.Livro).WithMany(p => p.PrecoLivros)
-            //        .HasForeignKey(d => d.LivroCodl);
-
-            //});
 
             OnModelCreatingPartial(modelBuilder);
         }

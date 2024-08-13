@@ -57,7 +57,7 @@
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <a role="button" class="btn btn-primary" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="Editar">Editar</a>
                                 <a role="button" class="btn btn-danger" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="Deletar">Deletar</a>
-                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalhesModal" onclick="mostrarDetalhes(@livro.Codl)">Detalhes</button>
+                                <a role="button" class="btn btn-info" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="ListarDetalhes">Detalhes</a>
                             </div>
                         </td>
 
@@ -66,33 +66,6 @@
             }
         </tbody>
     </table>
-    <div class="modal fade" id="detalhesModal" tabindex="-1" aria-labelledby="detalhesModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detalhesModalLabel">Detalhes do Livro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table id="precosTabela">
-                        <thead>
-                            <tr>
-                                <th>Nome do Livro</th>
-                                <th>Forma de Compra</th>
-                                <th>Desconto(%)</th>
-                                <th>Preço</th>
-                            </tr>
-                        </thead>
-                        <tbody>
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
