@@ -14,6 +14,6 @@
         <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o autor">
         @Html.ValidationMessageFor(x => x.Nome)
     </div>    
-    <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
+    <button type="submit" class="btn btn-primary btn-block" role="button">Adicionar</button>
     <a class=" btn btn-secondary d-block" asp-controller="Autor" asp-action="Index">Voltar</a>
 </form>
