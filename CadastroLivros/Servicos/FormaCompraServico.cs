@@ -32,6 +32,7 @@ namespace CadastroLivros.Servicos
                 return new Resultado { Sucesso = false, Mensagem = "Forma de Compra não encontrado." };
             }
             formaCompraDb.Descricao = formaCompra.Descricao;
+            formaCompraDb.Desconto = formaCompra.Desconto;
             await _formaCompraRepositorio.Atualizar(formaCompraDb);
             return new Resultado { Sucesso = true, FormaCompra = formaCompraDb };
 

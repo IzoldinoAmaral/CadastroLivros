@@ -38,6 +38,7 @@ namespace CadastroLivros.Servicos
             livroDb.Editora = livro.Editora;
             livroDb.Edicao = livro.Edicao;
             livroDb.AnoPublicacao = livro.AnoPublicacao;
+            livroDb.PrecoBase = livro.PrecoBase;
 
             await _livroRepositorio.Atualizar(livroDb);
             return new Resultado { Sucesso = true, Livro = livroDb };
