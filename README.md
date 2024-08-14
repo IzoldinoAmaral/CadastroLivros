@@ -11,49 +11,27 @@ Para que você possa ver em funcionamento o projeto é preciso que você:
 * Edite o appsettings.json com sua connectionString, com as config do seu Banco
    e execute o script abaixo:
 ```
--- Cria o banco de dados cadastroLivros
-CREATE DATABASE cadastroLivros;
-
--- Utiliza o banco de dados recém-criado
-USE cadastroLivros;
-
-CREATE TABLE Livro (
-    Codl INT PRIMARY KEY IDENTITY(1,1),
-    Titulo VARCHAR(40) NOT NULL,
-    Editora VARCHAR(40),
-	PrecoBase DECIMAL(10,2) NOT NULL,
-    Edicao INT,
-    AnoPublicacao CHAR(4)
-);
-
-CREATE TABLE Autor (
-    CodAu INT PRIMARY KEY IDENTITY(1,1),
-    Nome VARCHAR(40) NOT NULL
-);
-
-CREATE TABLE Assunto (
-    CodAs INT PRIMARY KEY IDENTITY(1,1),
-    Descricao VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE LivroAutor (
-    LivroCodl INT FOREIGN KEY REFERENCES Livro(Codl),
-    AutorCodAu INT FOREIGN KEY REFERENCES Autor(CodAu),
-    CONSTRAINT PK_LivroAutor PRIMARY KEY (LivroCodl, AutorCodAu)
-);
-
-CREATE TABLE LivroAssunto (
-    LivroCodl INT FOREIGN KEY REFERENCES Livro(Codl),
-    AssuntoCodAs INT FOREIGN KEY REFERENCES Assunto(CodAs),
-    CONSTRAINT PK_LivroAssunto PRIMARY KEY (LivroCodl, AssuntoCodAs)
-);
-
-CREATE TABLE FormaCompra (
-    CodCom INT PRIMARY KEY IDENTITY(1,1),
-    Descricao VARCHAR(20) NOT NULL,
-    Desconto DECIMAL(5,2) 
-);
+CREATE VIEW vw_LivroRelatorio AS
+SELECT	a.Nome AS NomeAutor,
+		l.Titulo AS TituloLivro,
+		l.Editora,
+		l.PrecoBase,
+		l.Edicao,
+		l.AnoPublicacao,
+		STRING_AGG(ass.Descricao, ', ') AS Assuntos
+FROM LivroAutor la
+INNER JOIN Livro l ON la.LivroCodl = l.Codl
+INNER JOIN Autor a ON la.AutorCodAu = a.CodAu
+INNER JOIN LivroAssunto laa ON l.Codl = laa.LivroCodl
+INNER JOIN  Assunto ass ON laa.AssuntoCodAs = ass.CodAs
+GROUP BY	a.Nome, 
+			l.Titulo, 
+			l.Editora, 
+			l.PrecoBase, 
+			l.Edicao, 
+			l.AnoPublicacao;
 
 ```
+* Abrir o projeto e executar o seguinte comando no terminal  dotnet ef database update
 * Após isso ja pode buildar e executar o projeto
 
