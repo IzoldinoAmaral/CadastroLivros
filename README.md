@@ -32,6 +32,6 @@ GROUP BY	a.Nome,
 			l.AnoPublicacao;
 
 ```
-* Abrir o projeto e executar o seguinte comando no terminal  dotnet ef database update
+* Abrir o projeto e executar o seguinte comando no terminal **_dotnet ef database update_**
 * Após isso ja pode buildar e executar o projeto
 
