@@ -19,26 +19,25 @@ namespace CadastroLivros.Data.Repositorio
             
             await _bancoContext.SaveChangesAsync();
 
-            if (livro.Autores != null && livro.Autores.Any())
+            if (livro.AutoresI != null && livro.AutoresI.Any())
             {
-
-                foreach (var autorId in livro.Autores.Select(a => a.CodAu))
+                foreach (var autorId in livro.AutoresI)
                 {
                     _bancoContext.LivroAutores.Add(new LivroAutor
                     {
-                        Livro = livro,
+                        LivroCodl = livro.Codl,
                         AutorCodAu = autorId
                     });
                 }
             }
 
-            if (livro.Assuntos != null && livro.Assuntos.Any())
+            if (livro.AssuntosI != null && livro.AssuntosI.Any())
             {
-                foreach (var assuntoId in livro.Assuntos.Select(a => a.CodAs))
+                foreach (var assuntoId in livro.AssuntosI)
                 {
                     _bancoContext.LivroAssuntos.Add(new LivroAssunto
                     {
-                        Livro = livro,
+                        LivroCodl = livro.Codl,
                         AssuntoCodAs = assuntoId
                     });
                 }

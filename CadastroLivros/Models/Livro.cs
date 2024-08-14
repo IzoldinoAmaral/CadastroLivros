@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CadastroLivros.Models
 {
@@ -27,6 +28,11 @@ namespace CadastroLivros.Models
 
         public IEnumerable<LivroAutor>? LivroAutores { get; set; }
         public IEnumerable<LivroAssunto>? LivroAssuntos { get; set; }
+
+        [NotMapped]
+        public IList<int>? AssuntosI { get; set; }
+        [NotMapped]
+        public IList<int>? AutoresI { get; set; }
 
     }
 }
