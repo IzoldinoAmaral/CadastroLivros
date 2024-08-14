@@ -1,15 +1,21 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
+using CadastroLivros.Servicos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CadastroLivros.Controllers
 {
     public class LivroController : Controller
     {
         private readonly ILivroServico _livroServico;
-        public LivroController(ILivroServico livroServico)
+        private readonly IAutorServico _autorServico;
+        private readonly IAssuntoServico _assuntoServico;
+        public LivroController(ILivroServico livroServico, IAutorServico autorServico, IAssuntoServico assuntoServico)
         {
             _livroServico = livroServico ?? throw new ArgumentNullException(nameof(livroServico));
+            _autorServico = autorServico ?? throw new ArgumentNullException(nameof(autorServico));
+            _assuntoServico = assuntoServico ?? throw new ArgumentNullException(nameof(assuntoServico));
         }
         public async Task<IActionResult> Index()
         {
@@ -40,6 +46,8 @@ namespace CadastroLivros.Controllers
         {
 
             Livro livro = await _livroServico.BuscarPorCodAsync(id);
+            ViewBag.Autores = new SelectList(await _autorServico.BuscarTodosAsync(), "CodAu", "Nome");
+            ViewBag.Assuntos = new SelectList(await _assuntoServico.BuscarTodosAsync(), "CodAs", "Descricao");
             return View(livro);
         }
 
@@ -59,7 +67,8 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
+                //TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message} - {erro.InnerException?.Message}";
                 return RedirectToAction("Index");
             }
 
@@ -77,8 +86,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                //TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message} - {erro.InnerException?.Message}";
+                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";                
                 return RedirectToAction("Index");
 
             }

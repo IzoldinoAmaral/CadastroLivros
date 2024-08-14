@@ -17,6 +17,7 @@ builder.Services.AddScoped<IGenericoRepositorio<Livro>, LivroRepositorio>();
 builder.Services.AddScoped<IGenericoRepositorio<Autor>, AutorRepositorio>();
 builder.Services.AddScoped<IGenericoRepositorio<Assunto>, AssuntoRepositorio>();
 builder.Services.AddScoped<IGenericoRepositorio<FormaCompra>, FormaCompraRepositorio>();
+builder.Services.AddScoped<ILivroRepositorio, LivroRepositorio>();
 builder.Services.AddScoped<ILivroServico, LivroServico>();
 builder.Services.AddScoped<IAutorServico, AutorServico>();
 builder.Services.AddScoped<IAssuntoServico, AssuntoServico>();

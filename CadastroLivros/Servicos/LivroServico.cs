@@ -1,4 +1,5 @@
-﻿using CadastroLivros.Extensions;
+﻿using CadastroLivros.Data;
+using CadastroLivros.Extensions;
 using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
@@ -8,10 +9,10 @@ namespace CadastroLivros.Servicos
 {
     public class LivroServico : ILivroServico
     {
-        private readonly IGenericoRepositorio<Livro> _livroRepositorio;
+        private readonly ILivroRepositorio _livroRepositorio;
         private readonly IFormaCompraServico _formaCompraServico;
 
-        public LivroServico(IGenericoRepositorio<Livro> livroRepositorio, IFormaCompraServico formaCompraServico)
+        public LivroServico(ILivroRepositorio livroRepositorio, IFormaCompraServico formaCompraServico)
         {
             _livroRepositorio = livroRepositorio ?? throw new ArgumentNullException(nameof(livroRepositorio));
             _formaCompraServico = formaCompraServico ?? throw new ArgumentNullException(nameof(formaCompraServico));
@@ -39,6 +40,36 @@ namespace CadastroLivros.Servicos
             livroDb.Edicao = livro.Edicao;
             livroDb.AnoPublicacao = livro.AnoPublicacao;
             livroDb.PrecoBase = livro.PrecoBase;
+            
+            if (livro.AssuntosSelecionados != null)
+            {
+                await _livroRepositorio.DeletarListaAssuntosAsync(livro.AssuntosSelecionados);
+                foreach (var assuntoId in livro.AssuntosSelecionados)
+                {
+                    livroDb.LivroAssuntos.Add(new LivroAssunto
+                    {
+                        LivroCodl = livro.Codl,
+                        AssuntoCodAs = assuntoId
+                    });
+                }
+            }
+
+            if (livro.AutoresSelecionados != null)
+            {
+                await _livroRepositorio.DeletarListaAutoresAsync(livro.AutoresSelecionados);
+
+                foreach (var autorId in livro.AutoresSelecionados)
+                {
+                    livroDb.LivroAutores.Add(new LivroAutor
+                    {
+                        LivroCodl = livro.Codl,
+                        AutorCodAu = autorId
+                    });
+                }
+            }
+
+
+
 
             await _livroRepositorio.Atualizar(livroDb);
             return new Resultado { Sucesso = true, Livro = livroDb };

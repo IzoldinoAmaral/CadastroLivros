@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Data.Repositorio
 {
-    public class LivroRepositorio : IGenericoRepositorio<Livro>
+    public class LivroRepositorio : ILivroRepositorio
     {
         private readonly BancoContext _bancoContext;
         public LivroRepositorio(BancoContext bancoContext)
@@ -19,9 +19,9 @@ namespace CadastroLivros.Data.Repositorio
             
             await _bancoContext.SaveChangesAsync();
 
-            if (livro.AutoresI != null && livro.AutoresI.Any())
+            if (livro.AutoresSelecionados != null && livro.AutoresSelecionados.Any())
             {
-                foreach (var autorId in livro.AutoresI)
+                foreach (var autorId in livro.AutoresSelecionados)
                 {
                     _bancoContext.LivroAutores.Add(new LivroAutor
                     {
@@ -31,9 +31,9 @@ namespace CadastroLivros.Data.Repositorio
                 }
             }
 
-            if (livro.AssuntosI != null && livro.AssuntosI.Any())
+            if (livro.AssuntosSelecionados != null && livro.AssuntosSelecionados.Any())
             {
-                foreach (var assuntoId in livro.AssuntosI)
+                foreach (var assuntoId in livro.AssuntosSelecionados)
                 {
                     _bancoContext.LivroAssuntos.Add(new LivroAssunto
                     {
@@ -65,7 +65,9 @@ namespace CadastroLivros.Data.Repositorio
 
         public async Task<Livro> BuscarPorCodAsync(int cod)
         {
-            return await _bancoContext.Livros.FirstOrDefaultAsync(c => c.Codl == cod);
+            return await _bancoContext.Livros.Include(l => l.LivroAutores)
+                        .Include(l => l.LivroAssuntos)
+                        .FirstOrDefaultAsync(c => c.Codl == cod);
         }
 
         public async Task<IEnumerable<Livro>> BuscarTodosAsync()
@@ -79,7 +81,34 @@ namespace CadastroLivros.Data.Repositorio
 
         public async Task<bool> DeletarAsync(Livro livro)
         {
+            if (livro.LivroAssuntos != null)
+            {
+                 _bancoContext.LivroAssuntos.RemoveRange(livro.LivroAssuntos);
+            }
             _bancoContext.Livros.Remove(livro);
+            await _bancoContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeletarListaAssuntosAsync(IList<int> assuntoIds)
+        {
+            var livroAssuntos = await _bancoContext.LivroAssuntos
+                                        .Where(la => assuntoIds.Contains(la.AssuntoCodAs))
+                                        .ToListAsync();
+
+            _bancoContext.LivroAssuntos.RemoveRange(livroAssuntos);
+            await _bancoContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeletarListaAutoresAsync(IList<int> autorIds)
+        {
+            var livroAutores = await _bancoContext.LivroAutores
+                                        .Where(la => autorIds.Contains(la.AutorCodAu))
+                                        .ToListAsync();
+
+            // Remover os itens encontrados
+            _bancoContext.LivroAutores.RemoveRange(livroAutores);
             await _bancoContext.SaveChangesAsync();
             return true;
         }
