@@ -38,6 +38,8 @@
                 <th scope="col">Edição</th>
                 <th scope="col">Ano de Publicação</th>
                 <th scope="col">Preço de tabela</th>
+                <th scope="col">Autores</th>
+                <th scope="col">Assuntos</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -53,6 +55,8 @@
                         <td>@livro.Edicao</td>
                         <td>@livro.AnoPublicacao</td>                        
                         <td>@livro.PrecoBase.ToString("C")</td>
+                        <td>@string.Join(", ", livro.Autores.Select(a => a.Nome))</td>
+                        <td>@string.Join(", ", livro.Assuntos.Select(a => a.Descricao))</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <a role="button" class="btn btn-primary" asp-route-id="@livro.Codl" asp-controller="Livro" asp-action="Editar">Editar</a>

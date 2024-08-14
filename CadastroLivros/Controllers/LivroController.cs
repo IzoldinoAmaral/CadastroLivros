@@ -77,7 +77,8 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";
+                //TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message} - {erro.InnerException?.Message}";
                 return RedirectToAction("Index");
 
             }

@@ -70,7 +70,11 @@ namespace CadastroLivros.Data.Repositorio
 
         public async Task<IEnumerable<Livro>> BuscarTodosAsync()
         {
-            return await _bancoContext.Livros.ToListAsync();
+            return await _bancoContext.Livros
+                        .Include(l => l.Autores) 
+                        .Include(l => l.Assuntos)
+                        .ToListAsync();
+                
         }
 
         public async Task<bool> DeletarAsync(Livro livro)
