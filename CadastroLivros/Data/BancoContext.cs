@@ -1,4 +1,5 @@
-﻿using CadastroLivros.Models;
+﻿using CadastroLivros.DTOs;
+using CadastroLivros.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivros.Data
@@ -13,9 +14,16 @@ namespace CadastroLivros.Data
         public DbSet<LivroAutor> LivroAutores { get; set; }
         public DbSet<LivroAssunto> LivroAssuntos { get; set; }
         public DbSet<FormaCompra> FormaCompras { get; set; }
+        public DbSet<LivroRelatorioDto> VwLivroRelatorio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<LivroRelatorioDto>(entity =>
+            {
+                entity.HasNoKey(); 
+                entity.ToView("vw_LivroRelatorio"); 
+            });
+
             modelBuilder.Entity<LivroAutor>()
                 .HasKey(la => new { la.LivroCodl, la.AutorCodAu });
 

@@ -1,6 +1,5 @@
 ﻿using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
-using CadastroLivros.Servicos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -11,11 +10,25 @@ namespace CadastroLivros.Controllers
         private readonly ILivroServico _livroServico;
         private readonly IAutorServico _autorServico;
         private readonly IAssuntoServico _assuntoServico;
-        public LivroController(ILivroServico livroServico, IAutorServico autorServico, IAssuntoServico assuntoServico)
+        private readonly ILivroRelatorioServico _livroRelatorioServico;
+        public LivroController(ILivroServico livroServico, IAutorServico autorServico, IAssuntoServico assuntoServico, ILivroRelatorioServico livroRelatorioServico)
         {
             _livroServico = livroServico ?? throw new ArgumentNullException(nameof(livroServico));
             _autorServico = autorServico ?? throw new ArgumentNullException(nameof(autorServico));
             _assuntoServico = assuntoServico ?? throw new ArgumentNullException(nameof(assuntoServico));
+            _livroRelatorioServico = livroRelatorioServico ?? throw new ArgumentNullException(nameof(livroRelatorioServico));
+        }
+        public async Task<IActionResult> GerarRelatorio()
+        {
+
+            var dadosRelatorio = await _livroRelatorioServico.ObterDadosRelatorioAsync();
+
+            using var memoryStream = new MemoryStream();
+            await _livroRelatorioServico.GerarRelatorioAsync(dadosRelatorio, memoryStream);
+
+            byte[] fileBytes = memoryStream.ToArray();
+
+            return File(fileBytes, "application/pdf", "RelatorioLivros.pdf");
         }
         public async Task<IActionResult> Index()
         {
@@ -67,8 +80,7 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                //TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message} - {erro.InnerException?.Message}";
+                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
 
@@ -113,9 +125,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                var innerException = erro.InnerException?.Message ?? erro.Message;
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {innerException}";
-                //TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message}";
+                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message}";
                 return RedirectToAction("Index");
             }
 

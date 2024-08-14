@@ -14,7 +14,7 @@ namespace CadastroLivros.Models
         public string Editora { get; set; }
         [Required(ErrorMessage = "Digite a edição do Livro")]
         [Range(1, int.MaxValue, ErrorMessage = "A edição deve ser um número positivo")]
-        public int? Edicao { get; set; }
+        public int Edicao { get; set; }
         [Required(ErrorMessage = "Digite o ano da publicacao do Livro")]
         [Range(1900, int.MaxValue, ErrorMessage = "O ano de publicação deve ser válido")]
         public string AnoPublicacao { get; set; }
