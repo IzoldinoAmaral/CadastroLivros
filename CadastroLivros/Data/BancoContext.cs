@@ -25,14 +25,6 @@ namespace CadastroLivros.Data
             });
 
             
-            //modelBuilder.Entity<Autor>().HasQueryFilter(a => a.Ativo);
-
-            //modelBuilder.Entity<Assunto>().HasQueryFilter(a => a.Ativo);
-
-            //modelBuilder.Entity<LivroAutor>().HasQueryFilter(la => la.Ativo);
-
-            
-            //modelBuilder.Entity<LivroAssunto>().HasQueryFilter(la => la.Ativo);
 
             modelBuilder.Entity<LivroAutor>()
                 .HasKey(la => new { la.LivroCodl, la.AutorCodAu });
@@ -75,6 +67,10 @@ namespace CadastroLivros.Data
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Ativo) 
+                .IsRequired()
+                .HasDefaultValue(true);
             });
 
             modelBuilder.Entity<Autor>(entity =>
@@ -85,6 +81,10 @@ namespace CadastroLivros.Data
                     .IsRequired()
                     .HasMaxLength(40)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Ativo) 
+                    .IsRequired()
+                    .HasDefaultValue(true);
             });
 
             modelBuilder.Entity<FormaCompra>(entity =>
