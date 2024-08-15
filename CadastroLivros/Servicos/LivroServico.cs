@@ -43,7 +43,7 @@ namespace CadastroLivros.Servicos
             
             if (livro.AssuntosSelecionados != null)
             {
-                await _livroRepositorio.DeletarListaAssuntosAsync(livro.AssuntosSelecionados);
+                await _livroRepositorio.DeletarListaAssuntosAsync(livroDb.AssuntosSelecionados);
                 foreach (var assuntoId in livro.AssuntosSelecionados)
                 {
                     livroDb.LivroAssuntos.Add(new LivroAssunto
@@ -56,7 +56,7 @@ namespace CadastroLivros.Servicos
 
             if (livro.AutoresSelecionados != null)
             {
-                await _livroRepositorio.DeletarListaAutoresAsync(livro.AutoresSelecionados);
+                await _livroRepositorio.DeletarListaAutoresAsync(livroDb.AutoresSelecionados);
 
                 foreach (var autorId in livro.AutoresSelecionados)
                 {

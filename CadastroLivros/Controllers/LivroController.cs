@@ -46,12 +46,13 @@ namespace CadastroLivros.Controllers
 
         public async Task<IActionResult> Criar()
         {
-            var livro = new Livro()
-            {                
-                Autores = await _livroServico.BuscarTodosAutoresAsync(),
-                Assuntos = await _livroServico.BuscarTodosAssuntosAsync()
-            };
+            var autores = await _livroServico.BuscarTodosAutoresAsync() ?? [];
+            var assuntos = await _livroServico.BuscarTodosAssuntosAsync() ?? [];
 
+            ViewBag.Autores = new SelectList(autores, "CodAu", "Nome");
+            ViewBag.Assuntos = new SelectList(assuntos, "CodAs", "Descricao");
+
+            var livro = new Livro();
             return View(livro);
         }
 
@@ -120,6 +121,8 @@ namespace CadastroLivros.Controllers
                     return RedirectToAction("Index");
                 }
 
+                ViewBag.Autores = new SelectList(await _livroServico.BuscarTodosAutoresAsync() ?? [], "CodAu", "Nome");
+                ViewBag.Assuntos = new SelectList(await _livroServico.BuscarTodosAssuntosAsync() ?? [], "CodAs", "Descricao");
                 return View(livro);
 
             }

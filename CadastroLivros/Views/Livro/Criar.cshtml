@@ -37,19 +37,19 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('.preco-mask').mask('000.000.000.000.000,00', { reverse: true });
+            $('.preco-mask').mask('000.000,00', { reverse: true });
         });
     </script>
     <div class="form-group">
         <label asp-for="AutoresSelecionados">Autores</label>
-        <select asp-for="AutoresSelecionados" asp-items="@(new SelectList(Model.Autores, "CodAu", "Nome"))" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
+        <select asp-for="AutoresSelecionados" asp-items="ViewBag.Autores" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
             <option value="">Selecione os autores</option>
         </select>
     </div>
 
     <div class="form-group">
         <label asp-for="AssuntosSelecionados">Assuntos</label>
-        <select asp-for="AssuntosSelecionados" asp-items="@(new SelectList(Model.Assuntos, "CodAs", "Descricao"))" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
+        <select asp-for="AssuntosSelecionados" asp-items="ViewBag.Assuntos" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
             <option value="">Selecione os assuntos</option>
         </select>
     </div>
