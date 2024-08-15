@@ -9,6 +9,8 @@ namespace CadastroLivros.Models
         [StringLength(50)]
         public string? Nome { get; set; }
 
+        public bool Ativo { get; set; } = true;
+
         public virtual ICollection<Livro>? Livros { get; set; }
         public ICollection<LivroAutor>? LivrosAutores { get; set; }
 

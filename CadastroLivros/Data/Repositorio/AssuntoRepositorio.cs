@@ -31,23 +31,29 @@ namespace CadastroLivros.Data.Repositorio
         public async Task<bool> BuscarPorNomeAsync(string descricao)
         {
 
-            return await _bancoContext.Assuntos.AnyAsync(l => l.Descricao == descricao);
+            return await _bancoContext.Assuntos
+                .Where(ass => ass.Ativo && ass.Descricao == descricao)
+                .AnyAsync();
 
         }
 
         public async Task<Assunto> BuscarPorCodAsync(int cod)
         {
-            return await _bancoContext.Assuntos.FirstOrDefaultAsync(c => c.CodAs == cod);
+            return await _bancoContext.Assuntos
+                .Where(ass => ass.Ativo && ass.CodAs == cod)
+                .FirstOrDefaultAsync(ass => ass.CodAs == cod);
         }
 
         public async Task<IEnumerable<Assunto>> BuscarTodosAsync()
         {
-            return await _bancoContext.Assuntos.ToListAsync();
+            return await _bancoContext.Assuntos
+                .Where(ass => ass.Ativo)
+                .ToListAsync();
         }
 
         public async Task<bool> DeletarAsync(Assunto assunto)
         {
-            _bancoContext.Assuntos.Remove(assunto);
+            _bancoContext.Assuntos.Update(assunto);
             await _bancoContext.SaveChangesAsync();
             return true;
         }

@@ -65,6 +65,7 @@ namespace CadastroLivros.Servicos
             {
                 return false;
             }
+            assuntoDb.Ativo = false;
             await _assuntoRepositorio.DeletarAsync(assuntoDb);
             return true;
         }

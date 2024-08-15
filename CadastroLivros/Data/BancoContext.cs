@@ -24,6 +24,16 @@ namespace CadastroLivros.Data
                 entity.ToView("vw_LivroRelatorio"); 
             });
 
+            
+            //modelBuilder.Entity<Autor>().HasQueryFilter(a => a.Ativo);
+
+            //modelBuilder.Entity<Assunto>().HasQueryFilter(a => a.Ativo);
+
+            //modelBuilder.Entity<LivroAutor>().HasQueryFilter(la => la.Ativo);
+
+            
+            //modelBuilder.Entity<LivroAssunto>().HasQueryFilter(la => la.Ativo);
+
             modelBuilder.Entity<LivroAutor>()
                 .HasKey(la => new { la.LivroCodl, la.AutorCodAu });
 
