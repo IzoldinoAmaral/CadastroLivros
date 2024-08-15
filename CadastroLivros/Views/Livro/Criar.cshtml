@@ -5,8 +5,18 @@
 
 <div class="text-center">
     <h1 class="display-4">Cadastrar Livro</h1>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <!-- Estilos e scripts Bootstrap e jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Estilos e scripts do bootstrap-select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js"></script>
+
+
 </div>
 
 <form asp-controller="Livro" asp-action="Criar" method="post">
@@ -35,24 +45,33 @@
         <input type="decimal" asp-for="PrecoBase" class="form-control preco-mask" placeholder="R$ 0,00" />
         @Html.ValidationMessageFor(x => x.PrecoBase)
     </div>
-    <script>
-        $(document).ready(function () {
-            $('.preco-mask').mask('000.000,00', { reverse: true });
-        });
-    </script>
     <div class="form-group">
         <label asp-for="AutoresSelecionados">Autores</label>
-        <select asp-for="AutoresSelecionados" asp-items="ViewBag.Autores" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
-            <option value="">Selecione os autores</option>
+        <select asp-for="AutoresSelecionados" asp-items="ViewBag.Autores" class="selectpicker" data-style="btn-secondary" data-live-search="true" data-width="100%" title="Selecione os autores" multiple>
         </select>
     </div>
 
     <div class="form-group">
         <label asp-for="AssuntosSelecionados">Assuntos</label>
-        <select asp-for="AssuntosSelecionados" asp-items="ViewBag.Assuntos" class="form-select form-select-lg mb-3" aria-label="size 3 select example" multiple>
-            <option value="">Selecione os assuntos</option>
+        <select asp-for="AssuntosSelecionados" asp-items="ViewBag.Assuntos" class="selectpicker" data-style="btn-secondary" data-live-search="true" data-width="100%" title="Selecione os assuntos" multiple>
         </select>
     </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+
+            $('.preco-mask').mask('000.000,00', { reverse: true });
+        });
+
+        if ($('input[name="Edicao"]').val() == 0) {
+            $('input[name="Edicao"]').val('');
+        }
+        if ($('input[name="PrecoBase"]').val() == 0) {
+            $('input[name="PrecoBase"]').val('');
+        }
+    </script>
     
     <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
     <a class=" btn btn-secondary d-block" asp-controller="Livro" asp-action="Index">Voltar</a>
