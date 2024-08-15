@@ -19,7 +19,7 @@ namespace CadastroLivros.Servicos
             var existeFormaCompra = await BuscarPorNomeAsync(formaCompra.Descricao);
             if (existeFormaCompra.Sucesso)
             {
-                throw new InvalidOperationException("O forma de Compra já existe.");
+                throw new InvalidOperationException("A forma de Compra já existe.");
             }
             return await _formaCompraRepositorio.AdicionarAsync(formaCompra);
         }
@@ -27,12 +27,14 @@ namespace CadastroLivros.Servicos
         public async Task<Resultado> AtualizarAsync(FormaCompra formaCompra)
         {
             var formaCompraDb = await BuscarPorCodAsync(formaCompra.CodCom);
+
             if (formaCompraDb == null)
             {
                 return new Resultado { Sucesso = false, Mensagem = "Forma de Compra não encontrado." };
             }
             formaCompraDb.Descricao = formaCompra.Descricao;
             formaCompraDb.Desconto = formaCompra.Desconto;
+
             await _formaCompraRepositorio.Atualizar(formaCompraDb);
             return new Resultado { Sucesso = true, FormaCompra = formaCompraDb };
 

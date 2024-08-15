@@ -26,8 +26,8 @@ namespace CadastroLivros.Models
 
         public IEnumerable<Autor>? Autores { get; set; }
 
-        public List<LivroAutor>? LivroAutores { get; set; }
-        public List<LivroAssunto>? LivroAssuntos { get; set; }
+        public IList<LivroAutor>? LivroAutores { get; set; }
+        public IList<LivroAssunto>? LivroAssuntos { get; set; }
 
         [NotMapped]
         public IList<int>? AssuntosSelecionados { get; set; }

@@ -1,5 +1,4 @@
-﻿using CadastroLivros.Data;
-using CadastroLivros.Extensions;
+﻿using CadastroLivros.Extensions;
 using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
@@ -43,7 +42,7 @@ namespace CadastroLivros.Servicos
             
             if (livro.AssuntosSelecionados != null)
             {
-                await _livroRepositorio.DeletarListaAssuntosAsync(livroDb.AssuntosSelecionados);
+                await _livroRepositorio.DeletarListaAssuntosAsync(livro.Codl);
                 foreach (var assuntoId in livro.AssuntosSelecionados)
                 {
                     livroDb.LivroAssuntos.Add(new LivroAssunto
@@ -56,7 +55,7 @@ namespace CadastroLivros.Servicos
 
             if (livro.AutoresSelecionados != null)
             {
-                await _livroRepositorio.DeletarListaAutoresAsync(livroDb.AutoresSelecionados);
+                await _livroRepositorio.DeletarListaAutoresAsync(livro.Codl);
 
                 foreach (var autorId in livro.AutoresSelecionados)
                 {
@@ -67,9 +66,6 @@ namespace CadastroLivros.Servicos
                     });
                 }
             }
-
-
-
 
             await _livroRepositorio.Atualizar(livroDb);
             return new Resultado { Sucesso = true, Livro = livroDb };

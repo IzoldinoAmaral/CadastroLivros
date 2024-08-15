@@ -90,27 +90,34 @@ namespace CadastroLivros.Data.Repositorio
             return true;
         }
 
-        public async Task<bool> DeletarListaAssuntosAsync(IList<int> assuntoIds)
+        public async Task<bool> DeletarListaAssuntosAsync(int codLivro)
         {
             var livroAssuntos = await _bancoContext.LivroAssuntos
-                                        .Where(la => assuntoIds.Contains(la.AssuntoCodAs))
-                                        .ToListAsync();
+                                      .Where(las => las.LivroCodl == codLivro)
+                                      .ToListAsync();
+            if (livroAssuntos.Count != 0)
+            {
+                _bancoContext.LivroAssuntos.RemoveRange(livroAssuntos);
+                await _bancoContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
 
-            _bancoContext.LivroAssuntos.RemoveRange(livroAssuntos);
-            await _bancoContext.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeletarListaAutoresAsync(IList<int> autorIds)
+        public async Task<bool> DeletarListaAutoresAsync(int codLivro)
         {
             var livroAutores = await _bancoContext.LivroAutores
-                                        .Where(la => autorIds.Contains(la.AutorCodAu))
-                                        .ToListAsync();
+                                     .Where(la => la.LivroCodl == codLivro)
+                                     .ToListAsync();
+            if (livroAutores.Count != 0)
+            {
+                _bancoContext.LivroAutores.RemoveRange(livroAutores);
+                await _bancoContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
 
-            // Remover os itens encontrados
-            _bancoContext.LivroAutores.RemoveRange(livroAutores);
-            await _bancoContext.SaveChangesAsync();
-            return true;
         }
 
         public async Task<IEnumerable<Autor>> BuscarTodosAutoresAsync()
