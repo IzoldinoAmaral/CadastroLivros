@@ -43,7 +43,7 @@ namespace CadastroLivros.Servicos
                 tabela.AddCell(item.Editora);
                 tabela.AddCell(item.PrecoBase.ToString("F2"));
                 tabela.AddCell(item.Edicao.ToString());
-                tabela.AddCell(item.AnoPublicacao);
+                tabela.AddCell(item.AnoPublicacao.ToString());
                 tabela.AddCell(item.Assuntos);
             }
 
