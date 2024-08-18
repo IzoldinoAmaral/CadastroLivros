@@ -27,7 +27,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         #region Teste: Pagina Inicial Livro
         [Fact(DisplayName = "Chamar Index da pagina de Livro")]
         [Trait("Controller Livro"," Index")]
-        public async Task ChamarIndex()
+        public async Task Criar_DeveChamarIndex()
         {
             //Arrange
             var fakerLivros = LivroFaker.Gerar(3);
@@ -50,7 +50,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         #region Teste: Listar Detalhes
         [Fact(DisplayName = "Listar Detalhes do livro")]
         [Trait("Controller Livro", " ListarDetalhes")]
-        public async Task ListarDetalhes()
+        public async Task ListarDetalhes_FormaCompra()
         {
             //Arrange
             var fakerDetalhes = new DetalhesLivroViewModelFaker();
@@ -75,7 +75,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         #region Teste: Criar Livro
         [Fact(DisplayName = "Criar livro")]
         [Trait("Controller Livro", "Criar")]
-        public async Task Criar()
+        public async Task Criar_DeveCriarUmNovoLivro()
         {
             //Arrange
             var fakerAutor = new AutorFaker();
@@ -114,7 +114,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         #region Teste: Editar Livro
         [Fact(DisplayName = "Editar livro")]
         [Trait("Controller Livro", "Editar")]
-        public async Task Editar()
+        public async Task Editar_DeveChamarViewComDadosParaEditar()
         {
             //Arrange
             var livroId = 1;
