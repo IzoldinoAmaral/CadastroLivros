@@ -23,6 +23,7 @@
 			**/Types/**
 			**/Models/**
 			**/DTOs/**
+			**/Data/BancoContext.cs
 		</ExcludeByFile>		
 	</PropertyGroup>
 
@@ -47,7 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Unitario\Data\" />
     <Folder Include="Unitario\DTOs\" />
     <Folder Include="Unitario\Models\" />
     <Folder Include="Unitario\Types\" />
