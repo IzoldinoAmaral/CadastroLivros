@@ -14,6 +14,12 @@ namespace CadastroLivrosTeste.Unitario.Fixture
             RuleFor(x => x.LivroAssuntos, _ => []);
 
         }
+        public static Assunto GerarAssunto()
+        {
+            var assuntoFaker = new AssuntoFaker();
+            return assuntoFaker.Generate();
+        }
+
 
         public static Assunto AssuntoFakerComCampoObrigatorioNulo()
         {
