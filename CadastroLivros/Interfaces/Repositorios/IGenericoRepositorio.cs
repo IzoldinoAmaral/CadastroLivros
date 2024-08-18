@@ -6,8 +6,6 @@ namespace CadastroLivros.Interfaces.Repositorios
     {
         Task<IEnumerable<T>> BuscarTodosAsync();
         Task<IEnumerable<T>> ListarDetalhesAsync(int cod);
-        Task<IEnumerable<Autor>> BuscarTodosAutoresAsync();
-        Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync();
         Task<T> BuscarPorCodAsync(int cod);
         Task<bool> BuscarPorNomeAsync(string descricao);
         Task<bool> AdicionarAsync(T entidade);

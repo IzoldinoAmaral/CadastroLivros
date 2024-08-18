@@ -6,6 +6,8 @@ namespace CadastroLivros.Interfaces.Repositorios
     {
         Task<bool> DeletarListaAssuntosAsync(int codLivro);
         Task<bool> DeletarListaAutoresAsync(int codLivro);
+        Task<IEnumerable<Autor>> BuscarTodosAutoresAsync();
+        Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync();
     }
 
 }
