@@ -6,7 +6,7 @@ using CadastroLivros.Models;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
-    public class AutorRepositorioTests
+    public class AutorRepositorioTests: IDisposable
     {
         private readonly AutorRepositorio _autorRepositorio;
         private readonly BancoContext _bancoContext;
@@ -20,6 +20,11 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             _bancoContext = new BancoContext(options);
             _bancoContext.Database.EnsureCreated(); 
             _autorRepositorio = new AutorRepositorio(_bancoContext);
+        }
+
+        public void Dispose()
+        {
+            _bancoContext.Dispose();
         }
 
         [Fact(DisplayName = "Adicionar Autor deve adicionar um autor ao banco de dados")]

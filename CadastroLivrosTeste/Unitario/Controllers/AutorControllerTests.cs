@@ -72,9 +72,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var autor = new AutorFaker().Generate();
             var resultado = new Resultado { Sucesso = true, Mensagem = "Autor atualizado com sucesso" };
 
-            _autorServico
-                .Setup(s => s.AtualizarAsync(autor))
-                .ReturnsAsync(resultado);
+            _autorServico.Setup(s => s.AtualizarAsync(autor)).ReturnsAsync(resultado);
 
             var tempData = new Mock<ITempDataDictionary>();
             _autorControllerTest.TempData = tempData.Object;
@@ -150,9 +148,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var autor = new AutorFaker().Generate();
             var resultado = new Resultado { Sucesso = true, Mensagem = "Autor cadastrado com sucesso" };
 
-            _autorServico
-                .Setup(s => s.AdicionarAsync(autor))
-                .ReturnsAsync(resultado.Sucesso);
+            _autorServico.Setup(s => s.AdicionarAsync(autor)).ReturnsAsync(resultado.Sucesso);
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
@@ -176,9 +172,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var autor = new AutorFaker().Generate();
             var exceptionMessage = "Erro ao atualizar autor";
 
-            _autorServico
-                .Setup(s => s.AtualizarAsync(autor))
-                .ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.AtualizarAsync(autor)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
@@ -201,9 +195,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var autorId = 1;
             var exceptionMessage = "Erro ao deletar autor";
 
-            _autorServico
-                .Setup(s => s.DeletarAsync(autorId))
-                .ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.DeletarAsync(autorId)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
@@ -226,9 +218,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var autor = new AutorFaker().Generate();
             var exceptionMessage = "Erro ao cadastrar autor";
 
-            _autorServico
-                .Setup(s => s.AdicionarAsync(autor))
-                .ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.AdicionarAsync(autor)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();

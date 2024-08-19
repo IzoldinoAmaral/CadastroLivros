@@ -51,9 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Unitario\DTOs\" />
-    <Folder Include="Unitario\Models\" />
-    <Folder Include="Unitario\Types\" />
-    <Folder Include="Unitario\Servicos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
-    public class LivroRepositorioTests
+    public class LivroRepositorioTests: IDisposable
     {
         private readonly LivroRepositorio _livroRepositorio;
         private readonly BancoContext _bancoContext;
@@ -22,6 +22,10 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 
         }
 
+        public void Dispose()
+        {
+            _bancoContext.Dispose();
+        }
 
         [Fact(DisplayName = "BuscarPorNomeAsync - DeveRetornarFalseSeLivroNaoExistir")]
         [Trait("Repositorio", "Unitario")]

@@ -84,11 +84,9 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var fakerAssunto = new AssuntoFaker();
             var dadosFakerAssunto = fakerAssunto.Generate(2);
 
-            _livroServico.Setup(s => s.BuscarTodosAutoresAsync())
-            .ReturnsAsync(dadosFakerAutor);
+            _livroServico.Setup(s => s.BuscarTodosAutoresAsync()).ReturnsAsync(dadosFakerAutor);
 
-            _livroServico.Setup(s => s.BuscarTodosAssuntosAsync())
-                .ReturnsAsync(dadosFakerAssunto);            
+            _livroServico.Setup(s => s.BuscarTodosAssuntosAsync()).ReturnsAsync(dadosFakerAssunto);            
 
             //Act            
             var result = await _livroControllerTest.Criar();
@@ -127,12 +125,9 @@ namespace CadastroLivrosTeste.Unitario.Controllers
 
             var fakerLivros = await LivroFaker.GerarComTodosCamposPreenchidosAsync();
 
-            _livroServico.Setup(s => s.BuscarPorCodAsync(livroId))
-                            .ReturnsAsync(fakerLivros);
-            _autorServico.Setup(s => s.BuscarTodosAsync())
-                            .ReturnsAsync(dadosFakerAutor);
-            _assuntoServico.Setup(s => s.BuscarTodosAsync())
-                            .ReturnsAsync(dadosFakerAssunto);
+            _livroServico.Setup(s => s.BuscarPorCodAsync(livroId)).ReturnsAsync(fakerLivros);
+            _autorServico.Setup(s => s.BuscarTodosAsync()).ReturnsAsync(dadosFakerAutor);
+            _assuntoServico.Setup(s => s.BuscarTodosAsync()).ReturnsAsync(dadosFakerAssunto);
 
             // Act
             var result = await _livroControllerTest.Editar(livroId);
@@ -408,16 +403,14 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var dadosRelatorio = new List<LivroRelatorioDto>(); // Supondo que LivroRelatorioDto é o tipo retornado por ObterDadosRelatorioAsync
             var memoryStream = new MemoryStream();
             
-            _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync())
-                                  .ReturnsAsync(dadosRelatorio);
+            _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync()).ReturnsAsync(dadosRelatorio);
 
             _livroRelatorioServico.Setup(s => s.GerarRelatorioAsync(dadosRelatorio, It.IsAny<Stream>()))
-                                  .Callback<List<LivroRelatorioDto>, Stream>((dados, stream) =>
-                                  {
-                                      byte[] fakeData = Encoding.UTF8.GetBytes("Fake PDF Data");
-                                      stream.Write(fakeData, 0, fakeData.Length);
-                                  })
-                                  .Returns(Task.CompletedTask);
+                .Callback<List<LivroRelatorioDto>, Stream>((dados, stream) =>
+                {
+                    byte[] fakeData = Encoding.UTF8.GetBytes("Fake PDF Data");
+                    stream.Write(fakeData, 0, fakeData.Length);
+                }).Returns(Task.CompletedTask);
 
             // Act
             var result = await _livroControllerTest.GerarRelatorio();

@@ -5,7 +5,7 @@ using CadastroLivrosTeste.Unitario.Fixture;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
-    public class FormaCompraRepositorioTests
+    public class FormaCompraRepositorioTests : IDisposable
     {
         private readonly FormaCompraRepositorio _formaCompraRepositorio;
         private readonly BancoContext _bancoContext;
@@ -22,6 +22,11 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             _formaCompraRepositorio = new FormaCompraRepositorio(_bancoContext);
 
             _formaCompraFaker = new FormaCompraFaker();
+        }
+
+        public void Dispose()
+        {
+            _bancoContext.Dispose();
         }
 
         [Fact(DisplayName = "AdicionarAsync_DeveAdicionarFormaCompra")]

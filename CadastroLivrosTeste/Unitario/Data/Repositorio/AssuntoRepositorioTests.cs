@@ -7,7 +7,7 @@ using Moq;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
-    public class AssuntoRepositorioTests 
+    public class AssuntoRepositorioTests :IDisposable
     {
         private readonly AssuntoRepositorio _assuntoRepositorio;
         private readonly BancoContext _bancoContext;
@@ -21,6 +21,11 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             _bancoContext = new BancoContext(options);
             _bancoContext.Database.EnsureCreated();
             _assuntoRepositorio = new AssuntoRepositorio(_bancoContext);
+        }
+
+        public void Dispose()
+        {
+            _bancoContext.Dispose();
         }
 
 
