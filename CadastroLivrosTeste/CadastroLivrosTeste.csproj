@@ -23,6 +23,7 @@
 			**/Types/**
 			**/Models/**
 			**/DTOs/**
+			**/Extensions/**
 			**/Data/BancoContext.cs
 		</ExcludeByFile>		
 	</PropertyGroup>

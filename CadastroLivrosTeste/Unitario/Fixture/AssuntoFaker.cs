@@ -5,9 +5,10 @@ namespace CadastroLivrosTeste.Unitario.Fixture
 {
     public class AssuntoFaker : Faker<Assunto>
     {
+        private static int _codAsCounter = 1;
         public AssuntoFaker()
         {
-            RuleFor(x => x.CodAs, asf => asf.Random.Int(1, 20));
+            RuleFor(x => x.CodAs, asf => _codAsCounter++);
             RuleFor(x => x.Descricao, asf => asf.Random.String2(1, 30));
             RuleFor(x => x.Ativo, asf => asf.Random.Bool());
             RuleFor(x => x.Livros, _ => []);

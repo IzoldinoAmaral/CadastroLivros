@@ -13,12 +13,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BancoContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
 
-builder.Services.AddScoped<IGenericoRepositorio<Livro>, LivroRepositorio>();
-builder.Services.AddScoped<IGenericoRepositorio<Autor>, AutorRepositorio>();
-builder.Services.AddScoped<IGenericoRepositorio<Assunto>, AssuntoRepositorio>();
-builder.Services.AddScoped<IGenericoRepositorio<FormaCompra>, FormaCompraRepositorio>();
-builder.Services.AddScoped<ILivroRepositorio, LivroRepositorio>();
-builder.Services.AddScoped<ILivroRelatorioRepositorio, LivroRelatorioRepositorio>();
+builder.Services.AddTransient<IGenericoRepositorio<Livro>, LivroRepositorio>();
+builder.Services.AddTransient<IGenericoRepositorio<Autor>, AutorRepositorio>();
+builder.Services.AddTransient<IGenericoRepositorio<Assunto>, AssuntoRepositorio>();
+builder.Services.AddTransient<IGenericoRepositorio<FormaCompra>, FormaCompraRepositorio>();
+builder.Services.AddTransient<ILivroRepositorio, LivroRepositorio>();
+builder.Services.AddTransient<ILivroRelatorioRepositorio, LivroRelatorioRepositorio>();
 builder.Services.AddScoped<ILivroServico, LivroServico>();
 builder.Services.AddScoped<IAutorServico, AutorServico>();
 builder.Services.AddScoped<IAssuntoServico, AssuntoServico>();

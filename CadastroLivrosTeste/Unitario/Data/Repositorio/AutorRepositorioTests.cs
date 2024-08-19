@@ -8,8 +8,8 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
     public class AutorRepositorioTests
     {
-        private readonly AutorRepositorio _repositorio;
-        private readonly BancoContext _context;
+        private readonly AutorRepositorio _autorRepositorio;
+        private readonly BancoContext _bancoContext;
 
         public AutorRepositorioTests()
         {
@@ -17,21 +17,21 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _context = new BancoContext(options);
-            _context.Database.EnsureCreated(); 
-            _repositorio = new AutorRepositorio(_context);
+            _bancoContext = new BancoContext(options);
+            _bancoContext.Database.EnsureCreated(); 
+            _autorRepositorio = new AutorRepositorio(_bancoContext);
         }
 
         [Fact(DisplayName = "Adicionar Autor deve adicionar um autor ao banco de dados")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task AdicionarAsync_DeveAdicionarAutor()
         {
             // Arrange
             var autor = AutorFaker.GerarLista(1).First();
 
             // Act
-            var result = await _repositorio.AdicionarAsync(autor);
-            var autorNoBanco = await _context.Autores.FindAsync(autor.CodAu);
+            var result = await _autorRepositorio.AdicionarAsync(autor);
+            var autorNoBanco = await _bancoContext.Autores.FindAsync(autor.CodAu);
 
             // Assert
             Assert.True(result);
@@ -40,50 +40,52 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "Atualizar Autor deve atualizar um autor no banco de dados")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task Atualizar_DeveAtualizarAutor()
         {
             // Arrange
             var autor = AutorFaker.GerarLista(1).First();
-            await _repositorio.AdicionarAsync(autor);
+            await _autorRepositorio.AdicionarAsync(autor);
 
             autor.Nome = "Nome Atualizado";
 
             // Act
-            var resultado = await _repositorio.Atualizar(autor);
-            var autorAtualizado = await _context.Autores.FindAsync(autor.CodAu);
+            var resultado = await _autorRepositorio.Atualizar(autor);
+            var autorAtualizado = await _bancoContext.Autores.FindAsync(autor.CodAu);
 
             // Assert
             Assert.Equal(autor.Nome, autorAtualizado.Nome);
         }
 
         [Fact(DisplayName = "BuscarPorNomeAsync deve retornar verdadeiro se o autor existir")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task BuscarPorNomeAsync_DeveRetornarVerdadeiroSeAutorExistir()
         {
             // Arrange
             var autor = AutorFaker.GerarLista(1).First();
-            await _repositorio.AdicionarAsync(autor);
+            autor.Ativo = true;
+            await _autorRepositorio.AdicionarAsync(autor);
 
             // Act
-            var existe = await _repositorio.BuscarPorNomeAsync(autor.Nome);
+            var existe = await _autorRepositorio.BuscarPorNomeAsync(autor.Nome);
 
             // Assert
             Assert.True(existe);
         }
 
         [Fact(DisplayName = "BuscarPorCodAsync deve retornar o autor se existir")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task BuscarPorCodAsync_DeveRetornarAutorSeExistir()
         {
 
             // Arrange
             var autor = AutorFaker.GerarLista(1).First();
-            var adicionou = await _repositorio.AdicionarAsync(autor);
+            autor.Ativo = true;
+            var adicionou = await _autorRepositorio.AdicionarAsync(autor);
             Assert.True(adicionou); 
 
             // Act
-            var autorEncontrado = await _repositorio.BuscarPorCodAsync(autor.CodAu);
+            var autorEncontrado = await _autorRepositorio.BuscarPorCodAsync(autor.CodAu);
 
             // Assert
             Assert.NotNull(autorEncontrado); 
@@ -91,7 +93,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarTodosAsync deve retornar todos os autores ativos")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task BuscarTodosAsync_DeveRetornarTodosAutoresAtivos()
         {
             // Arrange
@@ -104,11 +106,11 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
                     Nome = autor.Nome,
                     Ativo = true
                 };
-                await _repositorio.AdicionarAsync(novoAutor);
+                await _autorRepositorio.AdicionarAsync(novoAutor);
             }
 
             // Act
-            var todosAutoresAtivos = await _repositorio.BuscarTodosAsync();
+            var todosAutoresAtivos = await _autorRepositorio.BuscarTodosAsync();
 
             // Assert
             Assert.Equal(3, todosAutoresAtivos.Count());
@@ -116,17 +118,17 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "DeletarAsync deve marcar um autor como inativo")]
-        [Trait("Categoria", "Repositório")]
+        [Trait("Repositorio", "Repositório")]
         public async Task DeletarAsync_DeveMarcarAutorComoInativo()
         {
             // Arrange
             var autor = AutorFaker.GerarLista(1).First();
-            await _repositorio.AdicionarAsync(autor);
+            await _autorRepositorio.AdicionarAsync(autor);
 
             // Act
             autor.Ativo = false;
-            var resultado = await _repositorio.DeletarAsync(autor);
-            var autorNoBanco = await _context.Autores.FindAsync(autor.CodAu);
+            var resultado = await _autorRepositorio.DeletarAsync(autor);
+            var autorNoBanco = await _bancoContext.Autores.FindAsync(autor.CodAu);
 
             // Assert
             Assert.True(resultado);
