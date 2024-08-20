@@ -39,6 +39,7 @@ namespace CadastroLivros.Servicos
             livroDb.Edicao = livro.Edicao;
             livroDb.AnoPublicacao = livro.AnoPublicacao;
             livroDb.PrecoBase = livro.PrecoBase;
+
             
             if (livro.AssuntosSelecionados != null)
             {
@@ -56,7 +57,6 @@ namespace CadastroLivros.Servicos
             if (livro.AutoresSelecionados != null)
             {
                 await _livroRepositorio.DeletarListaAutoresAsync(livro.Codl);
-
                 foreach (var autorId in livro.AutoresSelecionados)
                 {
                     livroDb.LivroAutores.Add(new LivroAutor

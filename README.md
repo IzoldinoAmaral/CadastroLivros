@@ -21,12 +21,12 @@ SELECT	a.Nome AS NomeAutor,
 		l.PrecoBase,
 		l.Edicao,
 		l.AnoPublicacao,
-		STRING_AGG(ass.Descricao, ', ') AS Assuntos
+		COALESCE(STRING_AGG(ass.Descricao, ', '), '') AS Assuntos
 FROM LivroAutor la
 INNER JOIN Livro l ON la.LivroCodl = l.Codl
 INNER JOIN Autor a ON la.AutorCodAu = a.CodAu
-INNER JOIN LivroAssunto lass ON l.Codl = lass.LivroCodl
-INNER JOIN  Assunto ass ON lass.AssuntoCodAs = ass.CodAs
+LEFT JOIN LivroAssunto lass ON l.Codl = lass.LivroCodl
+LEFT JOIN  Assunto ass ON lass.AssuntoCodAs = ass.CodAs
 GROUP BY	a.Nome, 
 			l.Titulo, 
 			l.Editora, 

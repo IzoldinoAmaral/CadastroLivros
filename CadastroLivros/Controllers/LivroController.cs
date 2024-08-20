@@ -62,6 +62,12 @@ namespace CadastroLivros.Controllers
             Livro livro = await _livroServico.BuscarPorCodAsync(id);
             ViewBag.Autores = new SelectList(await _autorServico.BuscarTodosAsync(), "CodAu", "Nome");
             ViewBag.Assuntos = new SelectList(await _assuntoServico.BuscarTodosAsync(), "CodAs", "Descricao");
+
+            if (livro != null)
+            {
+                livro.AssuntosSelecionados = livro.Assuntos?.Select(a => a.CodAs).ToList();
+                livro.AutoresSelecionados = livro.Autores?.Select(a => a.CodAu).ToList();
+            }
             return View(livro);
         }
 
