@@ -3,7 +3,6 @@ using CadastroLivros.Data.Repositorio;
 using CadastroLivros.Models;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {

@@ -3,7 +3,6 @@ using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using CadastroLivros.Servicos;
-using CadastroLivros.Types;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Moq;
 

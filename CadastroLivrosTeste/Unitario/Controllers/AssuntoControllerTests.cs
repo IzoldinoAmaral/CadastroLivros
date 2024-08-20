@@ -1,14 +1,12 @@
 ﻿using CadastroLivros.Controllers;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
-using CadastroLivros.Servicos;
 using CadastroLivros.Types;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using Org.BouncyCastle.Ocsp;
 
 namespace CadastroLivrosTeste.Unitario.Controllers
 {

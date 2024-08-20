@@ -1,11 +1,11 @@
-﻿using CadastroLivros.Data.Repositorio;
-using CadastroLivros.Data;
+﻿using CadastroLivros.Data;
+using CadastroLivros.Data.Repositorio;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Microsoft.EntityFrameworkCore;
 
 namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 {
-    public class LivroRepositorioTests: IDisposable
+    public class LivroRepositorioTests : IDisposable
     {
         private readonly LivroRepositorio _livroRepositorio;
         private readonly BancoContext _bancoContext;
@@ -70,7 +70,6 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             // Assert
             Assert.Equal(3, resultado.Count());
         }
-
 
     }
 }
