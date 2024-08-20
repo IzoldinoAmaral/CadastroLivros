@@ -52,19 +52,5 @@ namespace CadastroLivros.Data.Repositorio
             return true;
         }
 
-        public Task<IEnumerable<Autor>> BuscarTodosAutoresAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Assunto>> BuscarTodosAssuntosAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<FormaCompra>> ListarDetalhesAsync(int cod)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

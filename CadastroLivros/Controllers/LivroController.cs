@@ -107,6 +107,12 @@ namespace CadastroLivros.Controllers
         public async Task<IActionResult> Deletar(int id)
         {
             Livro livro = await _livroServico.BuscarPorCodAsync(id);
+            if (livro == null)
+            {
+                TempData["MensagemErro"] = "Livro não encontrado.";
+                return RedirectToAction("Index");
+            }
+
             return View(livro);
         }
         [HttpPost]
