@@ -1,6 +1,6 @@
 ﻿namespace CadastroLivros.DTOs
 {
-    public class LivroRelatorioDto
+    public record LivroRelatorioDto
     {
         public string NomeAutor { get; set; }
         public string TituloLivro { get; set; }
