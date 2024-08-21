@@ -20,41 +20,9 @@ namespace CadastroLivros.Data
         {
             modelBuilder.Entity<LivroRelatorioDto>(entity =>
             {
-                entity.HasNoKey(); 
-                entity.ToView("vw_LivroRelatorio"); 
+                entity.HasNoKey();
+                entity.ToView("vw_LivroRelatorio");
             });
-            
-
-            modelBuilder.Entity<LivroAutor>()
-                .HasKey(la => new { la.LivroCodl, la.AutorCodAu });
-
-            modelBuilder.Entity<LivroAutor>()
-                .HasOne(la => la.Livro)
-                .WithMany(l => l.LivroAutores)
-                .HasForeignKey(la => la.LivroCodl)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<LivroAutor>()
-                .HasOne(la => la.Autor)
-                .WithMany(a => a.LivrosAutores)
-                .HasForeignKey(la => la.AutorCodAu)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<LivroAssunto>()
-                .HasKey(la => new { la.LivroCodl, la.AssuntoCodAs });
-
-            modelBuilder.Entity<LivroAssunto>()
-                .HasOne(la => la.Livro)
-                .WithMany(l => l.LivroAssuntos)
-                .HasForeignKey(la => la.LivroCodl)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<LivroAssunto>()
-                .HasOne(la => la.Assunto)
-                .WithMany(a => a.LivroAssuntos)
-                .HasForeignKey(la => la.AssuntoCodAs)
-                .OnDelete(DeleteBehavior.Cascade);
-
 
             modelBuilder.Entity<Assunto>(entity =>
             {
@@ -65,9 +33,9 @@ namespace CadastroLivros.Data
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Ativo) 
-                .IsRequired()
-                .HasDefaultValue(true);
+                entity.Property(e => e.Ativo)
+                    .IsRequired()
+                    .HasDefaultValue(true);
             });
 
             modelBuilder.Entity<Autor>(entity =>
@@ -79,7 +47,7 @@ namespace CadastroLivros.Data
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Ativo) 
+                entity.Property(e => e.Ativo)
                     .IsRequired()
                     .HasDefaultValue(true);
             });
@@ -112,7 +80,8 @@ namespace CadastroLivros.Data
                     .HasMaxLength(40)
                     .IsUnicode(false);
 
-                entity.HasMany(d => d.Assuntos).WithMany(p => p.Livros)
+                entity.HasMany(d => d.Assuntos)
+                    .WithMany(p => p.Livros)
                     .UsingEntity<LivroAssunto>(
                         j => j.HasOne(la => la.Assunto)
                               .WithMany()
@@ -128,7 +97,8 @@ namespace CadastroLivros.Data
                             j.ToTable("LivroAssunto");
                         });
 
-                entity.HasMany(d => d.Autores).WithMany(p => p.Livros)
+                entity.HasMany(d => d.Autores)
+                    .WithMany(p => p.Livros)
                     .UsingEntity<LivroAutor>(
                         j => j.HasOne(la => la.Autor)
                               .WithMany()
@@ -143,9 +113,9 @@ namespace CadastroLivros.Data
                             j.HasKey(la => new { la.LivroCodl, la.AutorCodAu });
                             j.ToTable("LivroAutor");
                         });
-
             });
         }
 
-    } 
+
+    }
 }
