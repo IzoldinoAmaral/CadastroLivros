@@ -23,7 +23,6 @@ namespace CadastroLivros.Data
                 entity.HasNoKey(); 
                 entity.ToView("vw_LivroRelatorio"); 
             });
-
             
 
             modelBuilder.Entity<LivroAutor>()
@@ -57,8 +56,6 @@ namespace CadastroLivros.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-
-
             modelBuilder.Entity<Assunto>(entity =>
             {
                 entity.HasKey(e => e.CodAs);
@@ -79,7 +76,7 @@ namespace CadastroLivros.Data
                 entity.ToTable("Autor");
                 entity.Property(e => e.Nome)
                     .IsRequired()
-                    .HasMaxLength(40)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Ativo) 
@@ -147,11 +144,8 @@ namespace CadastroLivros.Data
                             j.ToTable("LivroAutor");
                         });
 
-                OnModelCreatingPartial(modelBuilder);
             });
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-
-    } }
+    } 
+}

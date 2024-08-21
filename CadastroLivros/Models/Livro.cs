@@ -8,9 +8,10 @@ namespace CadastroLivros.Models
         public int Codl { get; set; }
 
         [Required(ErrorMessage ="Digite o titulo do Livro")]
+        [StringLength(40)]
         public string Titulo { get; set; }
         [Required(ErrorMessage = "Digite a editora do Livro")]
-        [StringLength(50)]
+        [StringLength(40)]
         public string Editora { get; set; }
         [Required(ErrorMessage = "Digite a edição do Livro")]
         [Range(1, int.MaxValue, ErrorMessage = "A edição deve ser um número positivo")]
