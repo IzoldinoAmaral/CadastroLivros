@@ -52,5 +52,9 @@ namespace CadastroLivros.Data.Repositorio
             return true;
         }
 
+        public async Task<FormaCompra> ObterPorNomeAsync(string descricao)
+        {
+           return await _bancoContext.FormaCompras.FirstOrDefaultAsync(c => c.Descricao == descricao);
+        }
     }
 }

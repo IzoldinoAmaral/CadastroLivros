@@ -21,14 +21,11 @@ namespace CadastroLivros.Models
         [Required(ErrorMessage = "Digite o preço de tabela do Livro")]
         [Range(1, double.MaxValue, ErrorMessage = "O Preço deve ser um número positivo")]
         public decimal PrecoBase { get; set; }
-
-        public IEnumerable<Assunto>? Assuntos { get; set; }
-
+        
+        public IEnumerable<Assunto>? Assuntos { get; set; }       
         public IEnumerable<Autor>? Autores { get; set; }
-
         public IList<LivroAutor>? LivroAutores { get; set; }
         public IList<LivroAssunto>? LivroAssuntos { get; set; }
-
         [NotMapped]
         public IList<int>? AssuntosSelecionados { get; set; }
         [NotMapped]

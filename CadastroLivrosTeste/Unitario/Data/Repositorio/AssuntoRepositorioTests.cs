@@ -29,7 +29,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 
 
         [Fact(DisplayName = "AdicionarAsync_DeveRetornarVerdadeiroQuandoAdicionadoComSucesso")]
-        [Trait("Repositorio", "AssuntoRepositorio")]
+        [Trait("Repositorio", "Adicionar")]
         public async Task AdicionarAsync_DeveRetornarVerdadeiroQuandoAdicionadoComSucesso()
         {
             // Arrange
@@ -46,7 +46,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "Atualizar_DeveRetornarAssuntoAtualizado")]
-        [Trait("Repositorio", "AssuntoRepositorio")]
+        [Trait("Repositorio", "Atualizar")]
         public async Task Atualizar_DeveRetornarAssuntoAtualizado()
         {
             // Arrange
@@ -68,7 +68,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorNomeAsync_DeveRetornarVerdadeiroSeNomeExiste")]
-        [Trait("Repositorio", "AssuntoRepositorio")]
+        [Trait("Repositorio", "Buscar Por Nome")]
         public async Task BuscarPorNomeAsync_DeveRetornarVerdadeiroSeNomeExiste()
         {
             // Arrange
@@ -92,7 +92,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorCodAsync_DeveRetornarAssuntoSeEncontrado")]
-        [Trait("Repositorio", "AssuntoRepositorio")]
+        [Trait("Repositorio", "Buscar Por Cod")]
         public async Task BuscarPorCodAsync_DeveRetornarAssuntoSeEncontrado()
         {
             // Arrange
@@ -111,7 +111,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarTodosAsync_DeveRetornarTodosAssuntosAtivos")]
-        [Trait("Repositorio", "AssuntoRepositorio")]
+        [Trait("Repositorio", "BuscarTodos")]
         public async Task BuscarTodosAsync_DeveRetornarTodosAssuntosAtivos()
         {
             // Arrange
@@ -135,7 +135,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "DeletarAsync_DeveDesativarAssunto")]
-        [Trait("Repositório", "AssuntoRepositorio")]
+        [Trait("Repositório", "Deletar")]
         public async Task DeletarAsync_DeveDesativarAssunto()
         {
             // Arrange
@@ -154,6 +154,46 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
 
 
         }
+        [Fact(DisplayName = "ObterPorNomeAsync_DeveRetornarAssuntoCorretoSeNomeExistir")]
+        [Trait("Repositório", "Obter por nome")]
+        public async Task ObterPorNomeAsync_DeveRetornarAssuntoCorretoSeNomeExistir()
+        {
+            // Arrange
+            var descricaoEsperada = "Teste";
+            var assuntoEsperado = new Assunto
+            {
+                CodAs = 1,
+                Descricao = descricaoEsperada,
+                Ativo = true
+            };
+
+            // Adiciona o Assunto ao banco de dados em memória
+            _bancoContext.Assuntos.Add(assuntoEsperado);
+            await _bancoContext.SaveChangesAsync();
+
+            // Act
+            var resultado = await _assuntoRepositorio.ObterPorNomeAsync(descricaoEsperada);
+
+            // Assert
+            Assert.NotNull(resultado); 
+            Assert.Equal(assuntoEsperado.CodAs, resultado.CodAs); 
+            Assert.Equal(assuntoEsperado.Descricao, resultado.Descricao); 
+        }
+
+        [Fact(DisplayName = "ObterPorNomeAsync_DeveRetornarNullSeNomeNaoExistir")]
+        [Trait("Repositório", "Obter por nome")]
+        public async Task ObterPorNomeAsync_DeveRetornarNullSeNomeNaoExistir()
+        {
+            // Arrange
+            var descricaoNaoExistente = "NomeInexistente";
+
+            // Act
+            var resultado = await _assuntoRepositorio.ObterPorNomeAsync(descricaoNaoExistente);
+
+            // Assert
+            Assert.Null(resultado); 
+        }
+
 
 
 

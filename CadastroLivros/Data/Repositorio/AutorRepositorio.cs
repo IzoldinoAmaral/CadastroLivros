@@ -32,14 +32,15 @@ namespace CadastroLivros.Data.Repositorio
         {
 
             return await _bancoContext.Autores
-                .Where(aut => aut.Ativo && aut.Nome == nome)
+                .Where(aut => aut.Nome == nome)
                 .AnyAsync(l => l.Nome == nome);
 
         }
 
         public async Task<Autor> BuscarPorCodAsync(int cod)
         {
-            return await _bancoContext.Autores.Where(aut => aut.Ativo && aut.CodAu == cod)
+            return await _bancoContext.Autores
+                .Where(aut => aut.Ativo && aut.CodAu == cod)
                 .FirstOrDefaultAsync(c => c.CodAu == cod);
         }
 
@@ -57,5 +58,11 @@ namespace CadastroLivros.Data.Repositorio
             return true;
         }
 
+        public async Task<Autor> ObterPorNomeAsync(string descricao)
+        {
+            return await _bancoContext.Autores
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Nome == descricao);
+        }
     }
 }

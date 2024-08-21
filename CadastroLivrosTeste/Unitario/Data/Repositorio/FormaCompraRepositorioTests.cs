@@ -30,7 +30,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "AdicionarAsync_DeveAdicionarFormaCompra")]
-        [Trait("Repositório", "Forma Compra Repositorio")]
+        [Trait("Repositório", "Adicionar")]
         public async Task AdicionarAsync_DeveAdicionarFormaCompra()
         {
             // Arrange
@@ -47,7 +47,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "Atualizar_DeveAtualizarFormaCompra")]
-        [Trait("Repositório", "FormaCompraRepositorio")]
+        [Trait("Repositório", "Atualizar")]
         public async Task Atualizar_DeveAtualizarFormaCompra()
         {
             // Arrange
@@ -66,7 +66,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorNomeAsync_DeveRetornarTrueSeDescricaoExistir")]
-        [Trait("Repositório", "FormaCompraRepositorio")]
+        [Trait("Repositório", "Buscar Por Nome")]
         public async Task BuscarPorNomeAsync_DeveRetornarTrueSeDescricaoExistir()
         {
             // Arrange
@@ -81,7 +81,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorCodAsync_DeveRetornarFormaCompraSeCodExistir")]
-        [Trait("Repositório", "FormaCompraRepositorio")]
+        [Trait("Repositório", "Buscar Por Cod")]
         public async Task BuscarPorCodAsync_DeveRetornarFormaCompraSeCodExistir()
         {
             // Arrange
@@ -97,7 +97,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarTodosAsync_DeveRetornarTodasFormaCompras")]
-        [Trait("Repositório", "FormaCompraRepositorio")]
+        [Trait("Repositório", "Buscar Todos")]
         public async Task BuscarTodosAsync_DeveRetornarTodasFormaCompras()
         {
             // Arrange
@@ -115,7 +115,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "DeletarAsync_DeveRemoverFormaCompra")]
-        [Trait("Repositório", "FormaCompraRepositorio")]
+        [Trait("Repositório", "Deletar")]
         public async Task DeletarAsync_DeveRemoverFormaCompra()
         {
             // Arrange
@@ -130,6 +130,35 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             Assert.True(result);
             Assert.Null(formaCompraNoBanco);
         }
+
+        [Fact(DisplayName = "ObterPorNomeAsync_DeveRetornarFormaCompraSeDescricaoExistir")]
+        [Trait("Repositório", "Obter por Nome")]
+        public async Task ObterPorNomeAsync_DeveRetornarFormaCompraSeDescricaoExistir()
+        {
+            // Arrange
+            var formaCompra = _formaCompraFaker.Generate();
+            await _formaCompraRepositorio.AdicionarAsync(formaCompra);
+
+            // Act
+            var resultado = await _formaCompraRepositorio.ObterPorNomeAsync(formaCompra.Descricao);
+
+            // Assert
+            Assert.NotNull(resultado);
+            Assert.Equal(formaCompra.Descricao, resultado.Descricao);
+            Assert.Equal(formaCompra.CodCom, resultado.CodCom);
+        }
+
+        [Fact(DisplayName = "ObterPorNomeAsync_DeveRetornarNullSeDescricaoNaoExistir")]
+        [Trait("Repositório", "Obter Por Nome Null")]
+        public async Task ObterPorNomeAsync_DeveRetornarNullSeDescricaoNaoExistir()
+        {
+            // Act
+            var resultado = await _formaCompraRepositorio.ObterPorNomeAsync("DescricaoNaoExistente");
+
+            // Assert
+            Assert.Null(resultado);
+        }
+
 
     }
 }

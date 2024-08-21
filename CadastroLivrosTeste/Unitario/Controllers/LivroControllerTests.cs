@@ -3,10 +3,12 @@ using CadastroLivros.DTOs;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using CadastroLivrosTeste.Unitario.Fixture;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+using System;
 using System.Text;
 
 namespace CadastroLivrosTeste.Unitario.Controllers
@@ -400,17 +402,22 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task GerarRelatorio_DeveRetornarArquivoPdf()
         {
             // Arrange
-            var dadosRelatorio = new List<LivroRelatorioDto>(); // Supondo que LivroRelatorioDto é o tipo retornado por ObterDadosRelatorioAsync
-            var memoryStream = new MemoryStream();
-            
-            _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync()).ReturnsAsync(dadosRelatorio);
+            var dadosRelatorio = new List<LivroRelatorioDto>
+            {
+                new LivroRelatorioDto { NomeAutor = "Autor Teste", TituloLivro = "Livro Teste" }
+            };
+
+            _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync())
+                                      .ReturnsAsync(dadosRelatorio);
 
             _livroRelatorioServico.Setup(s => s.GerarRelatorioAsync(dadosRelatorio, It.IsAny<Stream>()))
-                .Callback<List<LivroRelatorioDto>, Stream>((dados, stream) =>
-                {
-                    byte[] fakeData = Encoding.UTF8.GetBytes("Fake PDF Data");
-                    stream.Write(fakeData, 0, fakeData.Length);
-                }).Returns(Task.CompletedTask);
+                                      .Callback((List<LivroRelatorioDto> relatorio, Stream stream) =>
+                                      {
+                                          // Simula a escrita de dados no stream
+                                          byte[] fakeData = Encoding.UTF8.GetBytes("Fake PDF Data");
+                                          stream.Write(fakeData, 0, fakeData.Length);
+                                      })
+                                      .Returns(Task.CompletedTask);
 
             // Act
             var result = await _livroControllerTest.GerarRelatorio();
@@ -419,11 +426,32 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             var fileResult = Assert.IsType<FileContentResult>(result);
             Assert.Equal("application/pdf", fileResult.ContentType);
             Assert.Equal("RelatorioLivros.pdf", fileResult.FileDownloadName);
-            Assert.NotEmpty(fileResult.FileContents); // Verifica se o arquivo não está vazio
-            
+            Assert.NotEmpty(fileResult.FileContents);
+
             _livroRelatorioServico.Verify(s => s.ObterDadosRelatorioAsync(), Times.Once);
             _livroRelatorioServico.Verify(s => s.GerarRelatorioAsync(dadosRelatorio, It.IsAny<Stream>()), Times.Once);
         }
+
+        [Fact(DisplayName = "Gerar Relatorio")]
+        [Trait("Controller Livro", "Gerar Relatorio sem dados")]
+        public async Task GerarRelatorio_DeveRedirecionarParaIndexComMensagem_QuandoDadosRelatorioEstiverVazio()
+        {
+            // Arrange
+            _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync())
+                                  .ReturnsAsync(new List<LivroRelatorioDto>());
+
+            _livroControllerTest.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = await _livroControllerTest.GerarRelatorio();
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+            Assert.Equal("Livro", redirectResult.ControllerName);
+            Assert.Equal("Não existem livros com autores cadastrados para o relatório.", _livroControllerTest.TempData["Mensagem"]);
+        }
+
         #endregion Teste: Gerar relatorio
     }
 

@@ -34,19 +34,50 @@ namespace CadastroLivrosTeste.Unitario.Servicos
             Assert.True(resultado);
         }
 
-        [Fact(DisplayName = "AdicionarAsync - Deve Lançar Exceção Se Autor Já Existir")]
-        [Trait("Serviço", "Autor Serviço")]
-        public async Task AdicionarAsync_DeveLancarExcecaoSeAutorJaExistir()
+        [Fact(DisplayName = "ObterPorNomeAsync - Deve Retornar Autor Pelo Nome")]
+        [Trait("Serviço", "Obter por nome")]
+        public async Task ObterPorNomeAsync_DeveRetornarAutorPeloNome()
+        {
+            // Arrange
+            var nomeAutor = "Autor Teste";
+            var autorEsperado = new AutorFaker().Generate();
+            autorEsperado.Nome = nomeAutor;
+
+            _autorRepositorio
+                .Setup(repo => repo.ObterPorNomeAsync(nomeAutor))
+                .ReturnsAsync(autorEsperado);
+
+            // Act
+            var resultado = await _autorServico.ObterPorNomeAsync(nomeAutor);
+
+            // Assert
+            _autorRepositorio.Verify(repo => repo.ObterPorNomeAsync(nomeAutor), Times.Once);
+            Assert.NotNull(resultado);
+            Assert.Equal(nomeAutor, resultado.Nome);
+        }
+
+        [Fact(DisplayName = "AdicionarAsync - Deve Ativar Autor Se Já Existir")]
+        [Trait("Categoria", "Serviço - Autor")]
+        public async Task AdicionarAsync_DeveAtivarAutorSeJaExistir()
         {
             // Arrange
             var autorExistente = new AutorFaker().Generate();
-            _autorRepositorio.Setup(repo => repo.BuscarPorNomeAsync(autorExistente.Nome)).Returns(Task.FromResult(true));
 
-            // Act 
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _autorServico.AdicionarAsync(autorExistente));
+            _autorRepositorio.Setup(repo => repo.BuscarPorNomeAsync(autorExistente.Nome)).ReturnsAsync(true);
+
+            _autorRepositorio.Setup(repo => repo.ObterPorNomeAsync(autorExistente.Nome)).ReturnsAsync(autorExistente);
+
+            _autorRepositorio.Setup(repo => repo.Atualizar(autorExistente)).ReturnsAsync(autorExistente);
+
+            // Act
+            var resultado = await _autorServico.AdicionarAsync(autorExistente);
 
             // Assert
-            Assert.Equal("O autor já existe.", exception.Message);
+            _autorRepositorio.Verify(repo => repo.BuscarPorNomeAsync(autorExistente.Nome), Times.Once);
+            _autorRepositorio.Verify(repo => repo.ObterPorNomeAsync(autorExistente.Nome), Times.Once);
+            _autorRepositorio.Verify(repo => repo.Atualizar(It.Is<Autor>(a => a.Ativo == true)), Times.Once);
+            _autorRepositorio.Verify(repo => repo.AdicionarAsync(It.IsAny<Autor>()), Times.Never);
+            Assert.True(resultado);
         }
 
         [Fact(DisplayName = "AtualizarAsync - Deve Atualizar Autor Existente")]

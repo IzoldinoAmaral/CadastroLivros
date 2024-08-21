@@ -23,6 +23,12 @@ namespace CadastroLivros.Controllers
 
             var dadosRelatorio = await _livroRelatorioServico.ObterDadosRelatorioAsync();
 
+            if (dadosRelatorio.Count == 0)
+            {
+                TempData["Mensagem"] = "Não existem livros com autores cadastrados para o relatório.";
+                return RedirectToAction("Index", "Livro");
+            }
+
             using var memoryStream = new MemoryStream();
             await _livroRelatorioServico.GerarRelatorioAsync(dadosRelatorio, memoryStream);
 

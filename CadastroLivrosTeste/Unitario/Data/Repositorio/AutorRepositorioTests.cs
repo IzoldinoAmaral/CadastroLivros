@@ -28,7 +28,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "Adicionar Autor deve adicionar um autor ao banco de dados")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Adicionar")]
         public async Task AdicionarAsync_DeveAdicionarAutor()
         {
             // Arrange
@@ -45,7 +45,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "Atualizar Autor deve atualizar um autor no banco de dados")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Atualizar")]
         public async Task Atualizar_DeveAtualizarAutor()
         {
             // Arrange
@@ -63,7 +63,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorNomeAsync deve retornar verdadeiro se o autor existir")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Buscar Por Nome")]
         public async Task BuscarPorNomeAsync_DeveRetornarVerdadeiroSeAutorExistir()
         {
             // Arrange
@@ -79,7 +79,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarPorCodAsync deve retornar o autor se existir")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Buscar por Cod")]
         public async Task BuscarPorCodAsync_DeveRetornarAutorSeExistir()
         {
 
@@ -98,7 +98,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "BuscarTodosAsync deve retornar todos os autores ativos")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Buscar Todos")]
         public async Task BuscarTodosAsync_DeveRetornarTodosAutoresAtivos()
         {
             // Arrange
@@ -123,7 +123,7 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
         }
 
         [Fact(DisplayName = "DeletarAsync deve marcar um autor como inativo")]
-        [Trait("Repositorio", "Repositório")]
+        [Trait("Repositorio", "Deletar")]
         public async Task DeletarAsync_DeveMarcarAutorComoInativo()
         {
             // Arrange
@@ -139,5 +139,36 @@ namespace CadastroLivrosTeste.Unitario.Data.Repositorio
             Assert.True(resultado);
             Assert.False(autorNoBanco.Ativo);
         }
+
+        [Fact(DisplayName = "ObterPorNomeAsync deve retornar o autor se existir")]
+        [Trait("Categoria", "Obter Por Nome")]
+        public async Task ObterPorNomeAsync_DeveRetornarAutorSeExistir()
+        {
+            // Arrange
+            var autorExistente = AutorFaker.AutorFakerComCampoObrigatorioNulo();
+            autorExistente.Nome = "Autor Teste";
+            autorExistente.Ativo = true;
+
+            await _autorRepositorio.AdicionarAsync(autorExistente);
+
+            // Act
+            var autorObtido = await _autorRepositorio.ObterPorNomeAsync("Autor Teste");
+
+            // Assert
+            Assert.NotNull(autorObtido);
+            Assert.Equal(autorExistente.Nome, autorObtido.Nome);
+        }
+
+        [Fact(DisplayName = "ObterPorNomeAsync deve retornar null se o autor não existir")]
+        [Trait("Categoria", "Obter Por nome null")]
+        public async Task ObterPorNomeAsync_DeveRetornarNullSeNaoExistir()
+        {
+            // Act
+            var autorObtido = await _autorRepositorio.ObterPorNomeAsync("Autor Inexistente");
+
+            // Assert
+            Assert.Null(autorObtido);
+        }
+
     }
 }

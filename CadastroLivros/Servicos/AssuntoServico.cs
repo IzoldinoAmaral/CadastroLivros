@@ -1,4 +1,5 @@
-﻿using CadastroLivros.Interfaces.Repositorios;
+﻿using CadastroLivros.Data.Repositorio;
+using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using CadastroLivros.Types;
@@ -16,12 +17,18 @@ namespace CadastroLivros.Servicos
 
         public async Task<bool> AdicionarAsync(Assunto assunto)
         {
+
             var existeAssunto = await BuscarPorNomeAsync(assunto.Descricao);
             if (existeAssunto.Sucesso)
             {
-                throw new InvalidOperationException("O assunto já existe.");
+                var assuntoExistente = await _assuntoRepositorio.ObterPorNomeAsync(assunto.Descricao);
+                assuntoExistente.Ativo = true;
+
+                await _assuntoRepositorio.Atualizar(assuntoExistente);
+                return true;
             }
             return await _assuntoRepositorio.AdicionarAsync(assunto);
+
         }
 
         public async Task<Resultado> AtualizarAsync(Assunto assunto)

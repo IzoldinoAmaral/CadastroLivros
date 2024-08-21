@@ -1,6 +1,7 @@
 ﻿using CadastroLivros.Interfaces.Repositorios;
 using CadastroLivros.Models;
 using CadastroLivros.Servicos;
+using CadastroLivros.Types;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Moq;
 
@@ -17,17 +18,60 @@ namespace CadastroLivrosTeste.Unitario.Servicos
             _assuntoServico = new AssuntoServico(_assuntoRepositorio.Object);
         }
 
-        [Fact(DisplayName = "AdicionarAsync deve lançar exceção se o assunto já existir")]
-        [Trait("Serviços", "Assunto Serviço")]
-        public async Task AdicionarAsync_DeveLancarExcecao_SeAssuntoExistir()
+        [Fact(DisplayName = "AdicionarAsync deve ativar assunto existente se ele já existir")]
+        [Trait("Categoria", "Serviços")]
+        public async Task AdicionarAsync_DeveAtivarAssuntoExistente_SeEleJaExistir()
         {
             // Arrange
-            var assunto = AssuntoFaker.GerarAssunto();
-            _assuntoRepositorio.Setup(r => r.BuscarPorNomeAsync(assunto.Descricao)).ReturnsAsync(true);
+            var assuntoExistente = AssuntoFaker.GerarAssunto();
+            assuntoExistente.Ativo = false;
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _assuntoServico.AdicionarAsync(assunto));
-            Assert.Equal("O assunto já existe.", exception.Message);
+            _assuntoRepositorio
+                .Setup(r => r.ObterPorNomeAsync(assuntoExistente.Descricao))
+                .ReturnsAsync(assuntoExistente);
+
+            _assuntoRepositorio
+                .Setup(r => r.Atualizar(assuntoExistente))
+                .ReturnsAsync(assuntoExistente);
+
+            _assuntoRepositorio
+                .Setup(r => r.BuscarPorNomeAsync(assuntoExistente.Descricao))
+                .ReturnsAsync(true);
+
+            // Act
+            var resultado = await _assuntoServico.AdicionarAsync(assuntoExistente);
+
+            // Assert
+            Assert.True(resultado);
+            Assert.True(assuntoExistente.Ativo);
+            _assuntoRepositorio.Verify(r => r.ObterPorNomeAsync(assuntoExistente.Descricao), Times.Once);
+            _assuntoRepositorio.Verify(r => r.Atualizar(assuntoExistente), Times.Once);
+            _assuntoRepositorio.Verify(r => r.AdicionarAsync(It.IsAny<Assunto>()), Times.Never);
+        }
+
+        [Fact(DisplayName = "AdicionarAsync deve adicionar novo assunto se não existir")]
+        [Trait("Categoria", "Serviços")]
+        public async Task AdicionarAsync_DeveAdicionarNovoAssunto_SeNaoExistir()
+        {
+            // Arrange
+            var novoAssunto = AssuntoFaker.GerarAssunto();
+
+            _assuntoRepositorio
+                .Setup(r => r.BuscarPorNomeAsync(novoAssunto.Descricao))
+                .ReturnsAsync(false);
+
+            _assuntoRepositorio
+                .Setup(r => r.AdicionarAsync(novoAssunto))
+                .ReturnsAsync(true);
+
+            // Act
+            var resultado = await _assuntoServico.AdicionarAsync(novoAssunto);
+
+            // Assert
+            Assert.True(resultado);
+            _assuntoRepositorio.Verify(r => r.AdicionarAsync(novoAssunto), Times.Once);
+            _assuntoRepositorio.Verify(r => r.ObterPorNomeAsync(It.IsAny<string>()), Times.Never);
+            _assuntoRepositorio.Verify(r => r.Atualizar(It.IsAny<Assunto>()), Times.Never);
         }
 
         [Fact(DisplayName = "AdicionarAsync deve adicionar assunto se ele não existir")]

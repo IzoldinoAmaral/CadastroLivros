@@ -32,7 +32,7 @@ namespace CadastroLivros.Data.Repositorio
         {
 
             return await _bancoContext.Assuntos
-                .Where(ass => ass.Ativo && ass.Descricao == descricao)
+                .Where(ass => ass.Descricao == descricao)
                 .AnyAsync();
 
         }
@@ -58,5 +58,11 @@ namespace CadastroLivros.Data.Repositorio
             return true;
         }
 
+        public async Task<Assunto> ObterPorNomeAsync(string descricao)
+        {
+            return await _bancoContext.Assuntos
+                .Where(ass => ass.Descricao == descricao)
+                .FirstOrDefaultAsync();
+        }
     }
 }

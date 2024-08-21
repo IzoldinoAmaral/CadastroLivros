@@ -16,10 +16,15 @@ namespace CadastroLivros.Servicos
 
         public async Task<bool> AdicionarAsync(Autor autor)
         {
+
             var existeAutor = await BuscarPorNomeAsync(autor.Nome);
             if (existeAutor.Sucesso)
             {
-                throw new InvalidOperationException("O autor já existe.");
+                var autorExistente = await _autorRepositorio.ObterPorNomeAsync(autor.Nome);
+                autorExistente.Ativo = true;
+
+                await _autorRepositorio.Atualizar(autorExistente);
+                return true;
             }
             return await _autorRepositorio.AdicionarAsync(autor);
         }
@@ -68,6 +73,11 @@ namespace CadastroLivros.Servicos
             autorDb.Ativo = false;
             await _autorRepositorio.DeletarAsync(autorDb);
             return true;
+        }
+
+        public async Task<Autor> ObterPorNomeAsync(string nome)
+        {
+            return await _autorRepositorio.ObterPorNomeAsync(nome);
         }
     }
 }

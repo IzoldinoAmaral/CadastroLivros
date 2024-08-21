@@ -8,7 +8,13 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary" role="button" asp-controller="Livro" asp-action="Criar">Adicionar novo livro</a>
     </div>
-
+    
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-warning">
+            @TempData["Mensagem"]
+        </div>
+    }
     @if(TempData["MensagemSucesso"] != null)
     {
         <div class="alert alert-success" role="alert">

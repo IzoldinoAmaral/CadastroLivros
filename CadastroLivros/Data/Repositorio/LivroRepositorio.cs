@@ -130,5 +130,11 @@ namespace CadastroLivros.Data.Repositorio
             return await _bancoContext.Assuntos.ToListAsync();
         }
 
+        public async Task<Livro> ObterPorNomeAsync(string titulo)
+        {
+            return await _bancoContext.Livros.Include(l => l.LivroAutores)
+            .Include(l => l.LivroAssuntos)
+            .FirstOrDefaultAsync(c => c.Titulo == titulo);
+        }
     }
 }
