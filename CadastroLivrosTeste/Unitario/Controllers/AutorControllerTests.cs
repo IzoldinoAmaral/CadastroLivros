@@ -166,15 +166,15 @@ namespace CadastroLivrosTeste.Unitario.Controllers
 
         [Fact(DisplayName = "Atualizar - Erro Deve Redirecionar Para Index Com Mensagem de Erro")]
         [Trait("Controller Autor", " Atualizar")]
-        public async Task Atualizar_Erro_DeveRedirecionarParaIndex_ComMensagemErro()
+        public async Task Atualizar_ErroGenerico_DeveRedirecionarParaIndex_ComMensagemErro()
         {
             // Arrange
             var autor = new AutorFaker().Generate();
-            var exceptionMessage = "Erro ao atualizar autor";
+            var exceptionMessage = "Erro genérico";
 
-            _autorServico.Setup(s => s.AtualizarAsync(autor)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.AtualizarAsync(autor))
+                .ThrowsAsync(new Exception(exceptionMessage)); 
 
-            // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
             _autorControllerTest.TempData = tempData.Object;
 
@@ -184,18 +184,19 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao atualizar autor, detalhe do erro: {exceptionMessage}", Times.Once);
+            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao Atualizar autor, detalhe do erro: {exceptionMessage}", Times.Once);
         }
 
-        [Fact(DisplayName = "ConfirmarDelecao - Erro Deve Redirecionar Para Index Com Mensagem de Erro")]
-        [Trait("Controller Autor", " ConfirmarDeleçao")]
-        public async Task ConfirmarDelecao_Erro_DeveRedirecionarParaIndex_ComMensagemErro()
+        [Fact(DisplayName = "ConfirmarDelecao - Erro Genérico Deve Redirecionar Para Index Com Mensagem de Erro")]
+        [Trait("Controller Autor", "ConfirmarDelecao")]
+        public async Task ConfirmarDelecao_ErroGenerico_DeveRedirecionarParaIndex_ComMensagemErro()
         {
             // Arrange
             var autorId = 1;
-            var exceptionMessage = "Erro ao deletar autor";
+            var exceptionMessage = "Erro genérico ao deletar autor";
 
-            _autorServico.Setup(s => s.DeletarAsync(autorId)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.DeletarAsync(autorId))
+                .ThrowsAsync(new Exception(exceptionMessage)); 
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
@@ -207,18 +208,20 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao deletar autor, detalhe do erro: {exceptionMessage}", Times.Once);
+            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao Deletar autor, detalhe do erro: {exceptionMessage}", Times.Once);
         }
 
+
         [Fact(DisplayName = "Criar - Erro Deve Redirecionar Para Index Com Mensagem de Erro")]
-        [Trait("Controller Autor", " Criar")]
+        [Trait("Controller Autor", "Criar Autor")]
         public async Task Criar_Erro_DeveRedirecionarParaIndex_ComMensagemErro()
         {
             // Arrange
             var autor = new AutorFaker().Generate();
             var exceptionMessage = "Erro ao cadastrar autor";
 
-            _autorServico.Setup(s => s.AdicionarAsync(autor)).ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção
+            _autorServico.Setup(s => s.AdicionarAsync(autor))
+                .ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção genérica
 
             // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
@@ -230,7 +233,10 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao cadastrar autor, detalhe do erro: {exceptionMessage}", Times.Once);
+
+            // Verificação precisa
+            var expectedErrorMessage = $"Erro ao Cadastrar autor, detalhe do erro: {exceptionMessage}";
+            tempData.VerifySet(t => t["MensagemErro"] = expectedErrorMessage, Times.Once);
         }
 
 

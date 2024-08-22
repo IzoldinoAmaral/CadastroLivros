@@ -1,10 +1,11 @@
-﻿using CadastroLivros.Interfaces.Servicos;
+﻿using CadastroLivros.Controllers.Base;
+using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroLivros.Controllers
 {
-    public class FormaCompraController : Controller
+    public class FormaCompraController : BaseController
     {
         private readonly IFormaCompraServico _formaCompraServico;
         public FormaCompraController(IFormaCompraServico formaCompraServico)
@@ -45,8 +46,7 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar forma de Compra, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Atualizar Forma Compra");
             }
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
@@ -62,8 +62,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar forma de Compra, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Deletar Forma Compra");
 
             }
         }
@@ -89,8 +88,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar forma de Compra, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Cadastrar Forma Compra");
             }
 
         }

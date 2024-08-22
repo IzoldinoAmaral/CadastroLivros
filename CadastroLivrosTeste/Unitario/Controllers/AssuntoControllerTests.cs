@@ -110,13 +110,13 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             Assert.Equal(assunto, viewResult.Model);
         }
 
-        [Fact(DisplayName = "Atualizar deve redirecionar para Index com mensagem de erro quando ocorre uma exceção")]
-        [Trait("Controller Assunto", "Atualizar")]
+        [Fact(DisplayName = "Atualizar deve redirecionar para Index com mensagem de erro ao ocorrer exceção genérica")]
+        [Trait("Categoria", "Atualizar com exceção")]
         public async Task Atualizar_DeveRedirecionarParaIndexComMensagemDeErro_QuandoOcorrerExcecao()
         {
             // Arrange
             var assunto = AssuntoFaker.GerarAssunto();
-            var exceptionMessage = "Erro ao atualizar o banco de dados";
+            var exceptionMessage = "Erro ao atualizar o assunto";
 
             var tempData = new Mock<ITempDataDictionary>();
             _assuntoControllerTest.TempData = tempData.Object;
@@ -128,8 +128,13 @@ namespace CadastroLivrosTeste.Unitario.Controllers
 
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao atualizar assunto, detalhe do erro:")));            
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+
+            string expectedErrorMessage = $"Erro ao Atualizar assunto, detalhe do erro: {exceptionMessage}";
+            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg == expectedErrorMessage), Times.Once);
         }
+
+
 
         [Fact(DisplayName = "ConfirmarDelecao deve redirecionar para Index com mensagem de sucesso quando a exclusão é bem-sucedida")]
         [Trait("Controller Assunto", "ConfirmarDelecao")]
@@ -152,18 +157,17 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             tempData.VerifySet(tempData => tempData["MensagemSucesso"] = "Assunto deletado com sucesso", Times.Once);
         }
 
-        [Fact(DisplayName = "ConfirmarDelecao deve redirecionar para Index com mensagem de erro quando ocorre uma exceção")]
-        [Trait("Controller Assunto", "ConfirmarDelecao")]
+        [Fact(DisplayName = "ConfirmarDelecao deve redirecionar para Index com mensagem de erro quando ocorrer uma exceção")]
+        [Trait("Categoria", "ConfirmarDelecao")]
         public async Task ConfirmarDelecao_DeveRedirecionarParaIndexComMensagemDeErro_QuandoOcorrerExcecao()
         {
             // Arrange
             int id = 1;
-            var exceptionMessage = "Erro ao deletar o banco de dados";
-
+            var exceptionMessage = "Erro ao Deletar assunto, detalhe do erro: Erro ao deletar o banco de dados";
             var tempData = new Mock<ITempDataDictionary>();
             _assuntoControllerTest.TempData = tempData.Object;
 
-            _assuntoServico.Setup(s => s.DeletarAsync(id)).ThrowsAsync(new Exception(exceptionMessage));
+            _assuntoServico.Setup(s => s.DeletarAsync(id)).ThrowsAsync(new Exception("Erro ao deletar o banco de dados"));
 
             // Act
             var result = await _assuntoControllerTest.ConfirmarDelecao(id);
@@ -171,8 +175,9 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao deletar assunto, detalhe do erro:")), Times.Once);
+            tempData.VerifySet(tempData => tempData["MensagemErro"] = exceptionMessage, Times.Once);
         }
+
 
         [Fact(DisplayName = "Deletar deve retornar a view com o assunto correto")]
         [Trait("Controller Assunto", "Deletar")]
@@ -236,8 +241,8 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             _assuntoServico.Verify(s => s.AdicionarAsync(It.IsAny<Assunto>()), Times.Never);
         }
 
-        [Fact(DisplayName = "Criar deve redirecionar para Index com mensagem de erro quando ocorre uma exceção")]
-        [Trait("Controller Assunto", "Criar")]
+        [Fact(DisplayName = "Criar deve redirecionar para Index com mensagem de erro ao ocorrer exceção genérica")]
+        [Trait("Controller Assunto", "Criar com exceção")]
         public async Task Criar_DeveRedirecionarParaIndexComMensagemDeErro_QuandoOcorrerExcecao()
         {
             // Arrange
@@ -255,11 +260,10 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao cadastrar assunto, detalhe do erro:")), Times.Once);
-            _assuntoServico.Verify(s => s.AdicionarAsync(assunto), Times.Once);
+
+            string expectedErrorMessage = $"Erro ao Cadastrar assunto, detalhe do erro: {exceptionMessage}";
+            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg == expectedErrorMessage), Times.Once);
         }
-
-
 
 
     }

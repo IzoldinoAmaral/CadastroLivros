@@ -2,13 +2,13 @@
 using CadastroLivros.DTOs;
 using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
+using CadastroLivrosTeste.Unitario.DTOs;
 using CadastroLivrosTeste.Unitario.Fixture;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using System;
 using System.Text;
 
 namespace CadastroLivrosTeste.Unitario.Controllers
@@ -213,8 +213,6 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-
-            // Verifica se TempData foi atualizado corretamente
             tempData.VerifySet(t => t["MensagemErro"] = It.Is<string>(msg => msg.Contains(mensagemErro)), Times.Once);
             _livroServico.Verify(s => s.AtualizarAsync(fakeLivro), Times.Once);
         }
@@ -397,15 +395,18 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         #endregion Teste: Criar Http Post Livro
 
         #region Teste: Gerar relatorio
-        [Fact(DisplayName = "Gerar Relatorio")]
-        [Trait("Controller Livro", "Gerar Relatorio")]
+        [Fact(DisplayName = "Gerar Relatorio com dados")]
+        [Trait("Controller Livro", "Gerar Relatorio com pdf")]
         public async Task GerarRelatorio_DeveRetornarArquivoPdf()
         {
             // Arrange
-            var dadosRelatorio = new List<LivroRelatorioDto>
-            {
-                new LivroRelatorioDto { NomeAutor = "Autor Teste", TituloLivro = "Livro Teste" }
-            };
+
+            var fakerRelatorio = new LivroRelatorioDtoFaker();
+            var dadosRelatorio = fakerRelatorio.Generate(1);
+            //var dadosRelatorio = new List<LivroRelatorioDto>
+            //{
+            //    new LivroRelatorioDto { NomeAutor = "Autor Teste", TituloLivro = "Livro Teste" }
+            //};
 
             _livroRelatorioServico.Setup(s => s.ObterDadosRelatorioAsync())
                                       .ReturnsAsync(dadosRelatorio);
@@ -432,7 +433,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             _livroRelatorioServico.Verify(s => s.GerarRelatorioAsync(dadosRelatorio, It.IsAny<Stream>()), Times.Once);
         }
 
-        [Fact(DisplayName = "Gerar Relatorio")]
+        [Fact(DisplayName = "Gerar Relatorio sem dados")]
         [Trait("Controller Livro", "Gerar Relatorio sem dados")]
         public async Task GerarRelatorio_DeveRedirecionarParaIndexComMensagem_QuandoDadosRelatorioEstiverVazio()
         {

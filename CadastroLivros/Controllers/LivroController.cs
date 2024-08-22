@@ -1,11 +1,12 @@
-﻿using CadastroLivros.Interfaces.Servicos;
+﻿using CadastroLivros.Controllers.Base;
+using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CadastroLivros.Controllers
 {
-    public class LivroController : Controller
+    public class LivroController : BaseController
     {
         private readonly ILivroServico _livroServico;
         private readonly IAutorServico _autorServico;
@@ -92,9 +93,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-
-                TempData["MensagemErro"] = $"Erro ao atualizar livro, detalhe do erro: {erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Atualizar livro");
             }
 
         }
@@ -111,8 +110,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar livro, detalhe do erro: {erro.Message}";                
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Deletar livro");
 
             }
         }
@@ -146,8 +144,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar livro, detalhe do erro: {erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Cadastrar livro");
             }
 
         }

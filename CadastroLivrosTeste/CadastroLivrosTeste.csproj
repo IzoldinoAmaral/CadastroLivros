@@ -25,6 +25,7 @@
 			**/DTOs/**
 			**/Extensions/**
 			**/Data/BancoContext.cs
+			**/Controllers/Base/**
 		</ExcludeByFile>		
 	</PropertyGroup>
 

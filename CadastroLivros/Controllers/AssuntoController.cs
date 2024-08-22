@@ -1,10 +1,11 @@
-﻿using CadastroLivros.Interfaces.Servicos;
+﻿using CadastroLivros.Controllers.Base;
+using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroLivros.Controllers
 {
-    public class AssuntoController : Controller
+    public class AssuntoController : BaseController
     {
         private readonly IAssuntoServico _assuntoServico;
         public AssuntoController(IAssuntoServico assuntoServico)
@@ -45,8 +46,7 @@ namespace CadastroLivros.Controllers
             catch (Exception erro)
             {
 
-                TempData["MensagemErro"] = $"Erro ao atualizar assunto, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Atualizar assunto");
             }
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
@@ -62,8 +62,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar assunto, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Deletar assunto");
 
             }
         }
@@ -89,8 +88,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar assunto, detalhe do erro:{erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Cadastrar assunto");
             }
 
         }

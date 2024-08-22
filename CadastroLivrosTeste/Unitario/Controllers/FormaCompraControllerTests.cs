@@ -26,12 +26,10 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task Index_DeveRetornarViewComListaDeFormasDeCompra()
         {
             // Arrange
-            var formaComprasEsperadas = new List<FormaCompra>
-            {
-                new() { CodCom = 1, Descricao = "Forma 1", Desconto = 10 },
-                new() { CodCom = 2, Descricao = "Forma 2", Desconto = 15 }
-            };
-            _formaCompraServico.Setup(s => s.BuscarTodosAsync()).ReturnsAsync(formaComprasEsperadas);
+            var fakerFormaCompra = new FormaCompraFaker();
+            var dadosfakerFormaCompra = fakerFormaCompra.Generate(2);
+
+            _formaCompraServico.Setup(s => s.BuscarTodosAsync()).ReturnsAsync(dadosfakerFormaCompra);
 
             // Act
             var result = await _formaCompraControllerTest.Index();
@@ -52,7 +50,7 @@ namespace CadastroLivrosTeste.Unitario.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model); // A view para criação geralmente não tem um modelo
+            Assert.Null(viewResult.Model); 
         }
 
 
@@ -141,14 +139,18 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         [Trait("Controller FormaCompra", "Atualizar")]
         public async Task Atualizar_QuandoExcecaoOcorre_DeveRedirecionarParaIndexComMensagemErro()
         {
+
             // Arrange
             var fakerFormaCompra = new FormaCompraFaker();
             var dadosfakerFormaCompra = fakerFormaCompra.Generate();
 
+            var exceptionMessage = "Erro genérico";
+
+            _formaCompraServico.Setup(s => s.AtualizarAsync(dadosfakerFormaCompra))
+                .ThrowsAsync(new Exception(exceptionMessage)); 
+
             var tempData = new Mock<ITempDataDictionary>();
             _formaCompraControllerTest.TempData = tempData.Object;
-
-            _formaCompraServico.Setup(s => s.AtualizarAsync(It.IsAny<FormaCompra>())).ThrowsAsync(new System.Exception("Erro de teste"));
 
             // Act
             var result = await _formaCompraControllerTest.Atualizar(dadosfakerFormaCompra);
@@ -156,8 +158,8 @@ namespace CadastroLivrosTeste.Unitario.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao atualizar forma de Compra, detalhe do erro:")));
-            _formaCompraServico.Verify(s => s.AtualizarAsync(dadosfakerFormaCompra), Times.Once);
+            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao Atualizar Forma Compra, detalhe do erro: {exceptionMessage}", Times.Once);
+
         }
 
         [Fact(DisplayName = "Deve Redirecionar para Index com Mensagem de Sucesso quando Deleção Bem-Sucedida")]
@@ -207,20 +209,23 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task ConfirmarDelecao_QuandoExcecaoOcorre_DeveRedirecionarParaIndexComMensagemErro()
         {
             // Arrange
-            int id = 1;
-            _formaCompraServico.Setup(s => s.DeletarAsync(id)).ThrowsAsync(new System.Exception("Erro de teste"));
+            var formaCompraId = 1;
+            var exceptionMessage = "Erro genérico ao deletar Forma Compra";
 
+            _formaCompraServico.Setup(s => s.DeletarAsync(formaCompraId))
+                .ThrowsAsync(new Exception(exceptionMessage)); 
+
+            // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
             _formaCompraControllerTest.TempData = tempData.Object;
 
             // Act
-            var result = await _formaCompraControllerTest.ConfirmarDelecao(id);
+            var result = await _formaCompraControllerTest.ConfirmarDelecao(formaCompraId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao deletar forma de Compra, detalhe do erro:")));
-            _formaCompraServico.Verify(s => s.DeletarAsync(id), Times.Once);
+            tempData.VerifySet(t => t["MensagemErro"] = $"Erro ao Deletar Forma Compra, detalhe do erro: {exceptionMessage}", Times.Once);
         }
 
 
@@ -265,20 +270,21 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task Criar_ModelStateValido_DeveRedirecionarParaIndexComMensagemSucesso()
         {
             // Arrange
-            var formaCompra = new FormaCompra { CodCom = 1, Descricao = "Teste", Desconto = 10 };
+            var fakerFormaCompra = new FormaCompraFaker();
+            var dadosfakerFormaCompra = fakerFormaCompra.Generate();
             _formaCompraControllerTest.ModelState.Clear(); 
 
             var tempData = new Mock<ITempDataDictionary>();
             _formaCompraControllerTest.TempData = tempData.Object;
 
             // Act
-            var result = await _formaCompraControllerTest.Criar(formaCompra);
+            var result = await _formaCompraControllerTest.Criar(dadosfakerFormaCompra);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
             tempData.VerifySet(tempData => tempData["MensagemSucesso"] = "Forma de Compra Cadastrado com sucesso");
-            _formaCompraServico.Verify(s => s.AdicionarAsync(formaCompra), Times.Once);
+            _formaCompraServico.Verify(s => s.AdicionarAsync(dadosfakerFormaCompra), Times.Once);
         }
 
         [Fact(DisplayName = "Deve Retornar View com Modelo quando ModelState é Inválido")]
@@ -286,15 +292,16 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task Criar_ModelStateInvalido_DeveRetornarViewComModelo()
         {
             // Arrange
-            var formaCompra = new FormaCompra { CodCom = 1, Descricao = "Teste", Desconto = 10 };
+            var fakerFormaCompra = new FormaCompraFaker();
+            var dadosfakerFormaCompra = fakerFormaCompra.Generate();
             _formaCompraControllerTest.ModelState.AddModelError("Erro", "ModelState é inválido");
 
             // Act
-            var result = await _formaCompraControllerTest.Criar(formaCompra);
+            var result = await _formaCompraControllerTest.Criar(dadosfakerFormaCompra);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(formaCompra, viewResult.Model);
+            Assert.Equal(dadosfakerFormaCompra, viewResult.Model);
             _formaCompraServico.Verify(s => s.AdicionarAsync(It.IsAny<FormaCompra>()), Times.Never);
         }
 
@@ -303,23 +310,28 @@ namespace CadastroLivrosTeste.Unitario.Controllers
         public async Task Criar_QuandoExcecaoOcorre_DeveRedirecionarParaIndexComMensagemErro()
         {
             // Arrange
-            var formaCompra = new FormaCompra { CodCom = 1, Descricao = "Teste", Desconto = 10 };
-            _formaCompraControllerTest.ModelState.Clear(); 
+            var fakerFormaCompra = new FormaCompraFaker();
+            var dadosfakerFormaCompra = fakerFormaCompra.Generate();
 
+            var exceptionMessage = "Erro ao cadastrar Forma Compra";
 
+            _formaCompraServico.Setup(s => s.AdicionarAsync(dadosfakerFormaCompra))
+                .ThrowsAsync(new Exception(exceptionMessage)); // Simula uma exceção genérica
+
+            // Configurando TempData
             var tempData = new Mock<ITempDataDictionary>();
             _formaCompraControllerTest.TempData = tempData.Object;
 
-            _formaCompraServico.Setup(s => s.AdicionarAsync(formaCompra)).ThrowsAsync(new System.Exception("Erro de teste"));
-
             // Act
-            var result = await _formaCompraControllerTest.Criar(formaCompra);
+            var result = await _formaCompraControllerTest.Criar(dadosfakerFormaCompra);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectResult.ActionName);
-            tempData.VerifySet(tempData => tempData["MensagemErro"] = It.Is<string>(msg => msg.StartsWith("Erro ao cadastrar forma de Compra, detalhe do erro:")));
-            _formaCompraServico.Verify(s => s.AdicionarAsync(formaCompra), Times.Once);
+
+            // Verificação precisa
+            var expectedErrorMessage = $"Erro ao Cadastrar Forma Compra, detalhe do erro: {exceptionMessage}";
+            tempData.VerifySet(t => t["MensagemErro"] = expectedErrorMessage, Times.Once);
         }
     }
 

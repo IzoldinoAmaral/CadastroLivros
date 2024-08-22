@@ -1,11 +1,11 @@
-﻿using CadastroLivros.Interfaces.Servicos;
+﻿using CadastroLivros.Controllers.Base;
+using CadastroLivros.Interfaces.Servicos;
 using CadastroLivros.Models;
-using CadastroLivros.Servicos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroLivros.Controllers
 {
-    public class AutorController : Controller
+    public class AutorController : BaseController
     {
         private readonly IAutorServico _autorServico;
         public AutorController(IAutorServico autorServico)
@@ -45,9 +45,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-
-                TempData["MensagemErro"] = $"Erro ao atualizar autor, detalhe do erro: {erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Atualizar autor");
             }
         }
         public async Task<IActionResult> ConfirmarDelecao(int id)
@@ -63,8 +61,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao deletar autor, detalhe do erro: {erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Deletar autor");
 
             }
         }
@@ -90,8 +87,7 @@ namespace CadastroLivros.Controllers
             }
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = $"Erro ao cadastrar autor, detalhe do erro: {erro.Message}";
-                return RedirectToAction("Index");
+                return ExceptionHandler(erro, "Cadastrar autor");
             }
 
         }
