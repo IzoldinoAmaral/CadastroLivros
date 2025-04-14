@@ -1,6 +1,6 @@
 # Cadastro de Livros
 
-O projeto tem por objetivo faze rum cadastro de livro
+O projeto tem por objetivo fazer um cadastro de livro
 
 ## 🚀 Como executar o projeto
 
